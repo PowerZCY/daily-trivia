@@ -26,6 +26,8 @@
     "@types/mdx": "^2.0.13",
     "@windrun-huaiin/backend-core": "14.3.0",
     "@windrun-huaiin/base-ui": "14.0.3",
+    "@windrun-huaiin/faq-contracts": "^11.1.0",
+    "@windrun-huaiin/faq-sdk": "^11.1.0",
     "@windrun-huaiin/lib": "14.0.1",
     "@windrun-huaiin/third-ui": "14.4.0",
     "autoprefixer": "^10.4.27",

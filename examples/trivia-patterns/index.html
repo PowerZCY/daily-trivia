@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trivia Patterns Reference</title>
+  <meta name="description" content="Reference implementation for daily quiz, archive teaser cards, and answer report patterns.">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="eyebrow">Pattern Reference</div>
+      <h1>Three Trivia Product Patterns</h1>
+      <p class="hero-copy">
+        This page is a standalone sample for other sites to reference. It extracts three reusable patterns:
+        a daily 10-question module, an archive list with first-question teasers, and a report view after completion.
+      </p>
+    </header>
+
+    <main class="layout">
+      <section class="pattern-block">
+        <div class="section-heading">
+          <div>
+            <div class="section-kicker">Pattern 1</div>
+            <h2>Daily 10 Questions</h2>
+            <p>A self-contained daily quiz module with progress, answer feedback, persistence, and analytics hooks.</p>
+          </div>
+        </div>
+
+        <div class="daily-quiz-reference-shell">
+          <div class="daily-quiz-reference-section">
+            <div id="daily-quiz-container" class="daily-quiz-container-clone">
+              <div class="daily-quiz-header-clone">
+                <div>
+                  <h2 class="daily-day-title-clone">Day <span id="quiz-day-number">181</span></h2>
+                  <p id="quiz-date-chip" class="daily-day-subtitle-clone">2026-04-18</p>
+                </div>
+                <div class="daily-correct-display-clone">
+                  <span class="daily-correct-icon-clone">✓</span>
+                  <span class="daily-correct-text-clone">Correct: <span id="correct-count">0</span>/10</span>
+                </div>
+              </div>
+
+              <div id="quiz-active-view">
+                <div class="daily-progress-wrap-clone">
+                  <div class="daily-progress-meta-clone">
+                    <span class="daily-progress-text-clone">Question <span id="question-index">1</span>/10</span>
+                    <span class="daily-progress-text-clone">Category: <span id="question-category" class="daily-category-accent-clone">Science & Nature</span></span>
+                  </div>
+
+                  <div class="daily-progress-track-clone">
+                    <div class="daily-progress-fill-clone" id="quiz-progress-fill"></div>
+                  </div>
+                </div>
+
+                <div class="daily-question-wrap-clone">
+                  <h3 id="question-text" class="daily-question-text-clone"></h3>
+                  <div id="question-options" class="daily-options-container-clone"></div>
+                </div>
+
+                <div id="answer-feedback" class="daily-explanation-box-clone hidden"></div>
+              </div>
+
+              <div id="quiz-report-view" class="hidden"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pattern-block">
+        <div class="section-heading">
+          <div>
+            <div class="section-kicker">Pattern 2</div>
+            <h2>Archive Card With First-Question Teaser</h2>
+            <p>Each card previews the first question so users can decide whether to open the full challenge.</p>
+          </div>
+          <button id="toggle-completed" class="ghost-button" type="button">Hide completed cards</button>
+        </div>
+
+        <div class="archive-reference-shell">
+          <div id="archive-grid" class="archive-grid-clone"></div>
+        </div>
+      </section>
+
+      <section class="pattern-block">
+        <div class="section-heading">
+          <div>
+            <div class="section-kicker">Pattern 3</div>
+            <h2>Answer Report</h2>
+            <p>The report includes a score summary, question review, category breakdown, and a share action.</p>
+          </div>
+        </div>
+
+        <div class="glass-panel documentation-panel">
+          <div class="doc-grid">
+            <div>
+              <h3>What To Reuse</h3>
+              <ul>
+                <li>Visual tokens: gradients, blur, elevation, badge system, and button hierarchy</li>
+                <li>State model: current question, answer history, correct count, completion state</li>
+                <li>Analytics contract: start, answer, complete, archive click, report share</li>
+                <li>Persistence strategy: store completion per day or per content id</li>
+              </ul>
+            </div>
+            <div>
+              <h3>What To Replace Per Site</h3>
+              <ul>
+                <li>Brand palette and typography tokens</li>
+                <li>Question source and routing scheme</li>
+                <li>Analytics adapter implementation</li>
+                <li>Share copy and report text tone</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pattern-block">
+        <div class="section-heading">
+          <div>
+            <div class="section-kicker">Persistence</div>
+            <h2>LocalStorage Usage</h2>
+            <p>This sample also demonstrates how to persist quiz completion and archive-card state with browser storage.</p>
+          </div>
+        </div>
+
+        <div class="glass-panel documentation-panel">
+          <div class="doc-grid">
+            <div>
+              <h3>Keys In This Sample</h3>
+              <ul>
+                <li><code>trivia-patterns-sample-completion</code>: stores whether the daily sample has been completed, plus score and answer history</li>
+                <li><code>trivia-patterns-archive-completed</code>: stores the list of archive days marked as completed</li>
+              </ul>
+            </div>
+            <div>
+              <h3>When It Reads And Writes</h3>
+              <ul>
+                <li>On page load: tries to restore a completed report from <code>localStorage</code></li>
+                <li>On quiz completion: writes completion state and answer history</li>
+                <li>On archive completion: writes the finished day id into the completed-day list</li>
+                <li>On restart: removes the completion record and starts the sample fresh</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="code-note-block">
+            <h3>Reference Flow</h3>
+            <pre><code>const STORAGE_KEYS = {
+  sampleCompletion: "trivia-patterns-sample-completion",
+  archiveCompleted: "trivia-patterns-archive-completed"
+};
+
+const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.sampleCompletion) || "null");
+localStorage.setItem(STORAGE_KEYS.sampleCompletion, JSON.stringify({
+  completed: true,
+  correctCount,
+  answerHistory
+}));
+</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./sample.js"></script>
+</body>
+</html>

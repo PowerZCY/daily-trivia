@@ -15,6 +15,63 @@
     "heroImageAlt": "Diaomao – Modern pricing, credit dashboard and documentation system",
     "heroImageUrl": "https://r2.d8ger.com/default.webp"
   },
+  "trivia": {
+    "eyebrow": "Daily Trivia",
+    "title": "Five fresh questions every day, served in a calm learning-first format.",
+    "description": "Each day unlocks a new five-question set. Answer in order, review the explanations, and revisit any date from the archive when you want another short knowledge session.",
+    "primaryCta": "Play today’s set",
+    "subtleNote": "SSR-loaded questions, UTC+0 schedule, mobile-friendly flow",
+    "previewEyebrow": "Today’s preview",
+    "previewQuestionLabel": "First question",
+    "emptyTitle": "Today’s trivia is not ready yet.",
+    "emptyDescription": "The daily set has not been scheduled for the current UTC date yet. Check back soon or browse an earlier day from the archive.",
+    "quiz": {
+      "progressLabel": "Answer all five questions to unlock the report.",
+      "questionLabel": "Question",
+      "correctLabel": "Correct",
+      "categoryLabel": "Category",
+      "explanationLabel": "Explanation",
+      "correctState": "Correct.",
+      "incorrectState": "Incorrect. Correct answer:",
+      "nextQuestion": "Next question",
+      "viewReport": "View report"
+    },
+    "report": {
+      "eyebrow": "Daily report",
+      "titlePerfect": "Perfect score",
+      "titleStrong": "Strong finish",
+      "titleNice": "Nice run",
+      "copyPerfect": "You got {score}. Every question landed, and the explanations are ready below for a quick review.",
+      "copyStrong": "You got {score}. A few misses, but the report makes it easy to review what mattered.",
+      "copyNice": "You got {score}. Use the review below to fill the gaps and keep the streak moving.",
+      "reviewTitle": "Question review",
+      "showWrongOnly": "Show wrong only",
+      "showAll": "Show all",
+      "share": "Share result",
+      "copied": "Copied",
+      "retry": "Retry"
+    },
+    "archive": {
+      "title": "Browse earlier days",
+      "description": "Each archive card links to the full five-question set for that date. The teaser below is always that day’s first question.",
+      "completed": "Completed",
+      "open": "Not played",
+      "openQuiz": "Open quiz"
+    },
+    "detail": {
+      "backHome": "Back to home",
+      "pageEyebrow": "Daily archive",
+      "pageTitle": "Day {day}",
+      "pageDescription": "Replay the full five-question set for {date}, with the same report and explanation flow as the homepage."
+    },
+    "metadata": {
+      "homeTitle": "Daily Trivia: 5 new questions every day",
+      "homeDescription": "Play a fresh five-question trivia set each day, then review explanations and browse the full daily archive.",
+      "dailyTitle": "Daily Trivia Day {day} · {date}",
+      "dailyDescription": "Replay the five-question trivia set for {date}. First question: {question}",
+      "keywords": "daily trivia, daily quiz, five questions, trivia archive, knowledge quiz"
+    }
+  },
   "usage": {
     "title": "From zero to paid users",
     "eyesOn": "in 3 stupidly simple steps",

@@ -20,17 +20,19 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await paramsPromise;
-  const t = await getTranslations({ locale, namespace: 'home' });
+  const [tHome, tTrivia] = await Promise.all([
+    getTranslations({ locale, namespace: 'home' }),
+    getTranslations({ locale, namespace: 'trivia.metadata' }),
+  ]);
 
   return {
-    title: t('webTitle'),
-    description: t('webDescription'),
-    keywords: t('keywords'),
+    title: tTrivia('homeTitle'),
+    description: tTrivia('homeDescription'),
+    keywords: [tHome('keywords'), tTrivia('keywords')].join(', '),
     alternates: {
       canonical: `${appConfig.baseUrl}${getAsNeededLocalizedUrl(locale, '/')}`,
       languages: {
         "en": `${appConfig.baseUrl}${getAsNeededLocalizedUrl('en', '/')}`,
-        "zh": `${appConfig.baseUrl}${getAsNeededLocalizedUrl('zh', '/')}`,
       }
     },
     icons: [

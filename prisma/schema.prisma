@@ -187,3 +187,23 @@ model Apilog {
 
   @@schema("dailyt")
 }
+
+model DailyQuestionSchedule {
+  id           BigInt    @id @default(autoincrement())
+  showDate     DateTime  @map("show_date") @db.Date
+  questionId   BigInt    @map("question_id")
+  questionUuid String    @map("question_uuid") @db.Uuid
+  asFirst      Int       @default(0) @map("as_first")
+  sortOrder    Int       @map("sort_order")
+  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([showDate, questionId], map: "daily_question_schedule_show_date_question_id_key")
+  @@unique([showDate, questionUuid], map: "daily_question_schedule_show_date_question_uuid_key")
+  @@index([showDate], map: "idx_daily_question_schedule_show_date")
+  @@index([questionId], map: "idx_daily_question_schedule_question_id")
+  @@index([questionUuid], map: "idx_daily_question_schedule_question_uuid")
+  @@map("daily_question_schedule")
+
+  @@schema("dailyt")
+}

@@ -50,6 +50,12 @@ importers:
       '@windrun-huaiin/base-ui':
         specifier: 14.0.3
         version: 14.0.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(clsx@2.1.1)(next-intl@4.8.3(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(next-themes@0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwind-merge@3.5.0)(tailwindcss@4.2.2)
+      '@windrun-huaiin/faq-contracts':
+        specifier: ^11.1.0
+        version: 11.1.0
+      '@windrun-huaiin/faq-sdk':
+        specifier: ^11.1.0
+        version: 11.1.0
       '@windrun-huaiin/lib':
         specifier: 14.0.1
         version: 14.0.1(clsx@2.1.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwind-merge@3.5.0)
@@ -2271,6 +2277,12 @@ packages:
     hasBin: true
     peerDependencies:
       typescript: ^5.8.3
+
+  '@windrun-huaiin/faq-contracts@11.1.0':
+    resolution: {integrity: sha512-Rvb4mbp0+oqn3TOO20Rn5LJRSplD9qhVyxpOKUNGUdAoN40VyTYV4J9XiB85wlxaAPSMh+YwHcFzhgisJJNb2A==}
+
+  '@windrun-huaiin/faq-sdk@11.1.0':
+    resolution: {integrity: sha512-fSdM7fiRxH4i5U9WGsGR2FM7k2ytmE00xEDL8NEEmAzk8DMQMjsFxBtA0WcUH0e6o0lFpqBwLFCwTxLM8IXXbg==}
 
   '@windrun-huaiin/lib@14.0.1':
     resolution: {integrity: sha512-2yM/BHb6Fz/rLxg1WRbeWDXSPcQnTspZVUtJ2GShjEe+b6QXxBV4wo0hP1oVKO4Bj95WcQ/kUQUYYSKlcYoR7w==}
@@ -7072,6 +7084,12 @@ snapshots:
       semver: 7.7.4
       typescript: 5.9.3
       yaml: 2.8.3
+
+  '@windrun-huaiin/faq-contracts@11.1.0': {}
+
+  '@windrun-huaiin/faq-sdk@11.1.0':
+    dependencies:
+      '@windrun-huaiin/faq-contracts': 11.1.0
 
   '@windrun-huaiin/lib@14.0.1(clsx@2.1.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwind-merge@3.5.0)':
     dependencies:
