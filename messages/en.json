@@ -53,7 +53,7 @@
     },
     "archive": {
       "title": "Browse earlier days",
-      "description": "Here are the opening questions from each archived Daily Trivia quiz. Click any card to jump into that day's full set.",
+      "description": "Browse the opening questions from previous Daily Trivia quizzes. Click any card to view the full set for that day.",
       "completed": "Completed",
       "incompleteOnly": "Hide complete days",
       "empty": "All archived days are completed. Turn off the filter to browse the full archive again."

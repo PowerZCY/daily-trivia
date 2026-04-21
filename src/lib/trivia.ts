@@ -138,6 +138,9 @@ export async function getArchiveDays(): Promise<ArchiveDayItem[]> {
   const schedule = await dailyQuestionSchedule.findMany({
     where: {
       asFirst: 1,
+      showDate: {
+        lt: toUtcDateOnly(getTodayUtcDate()),
+      },
     },
     orderBy: {
       showDate: "desc",

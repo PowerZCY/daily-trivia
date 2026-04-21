@@ -591,7 +591,7 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
             </div>
           ) : (
             <div className="grid gap-5">
-              <div className="relative overflow-hidden rounded-3xl border border-white/60 bg-white/35 p-4 text-center shadow-sm backdrop-blur">
+              <div className="relative overflow-hidden rounded-3xl border border-white/55 bg-[linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.14))] p-4 text-center shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-md">
                 <h3 className="text-xl font-semibold tracking-tight text-slate-950 sm:text-2xl">
                   {scoreTitle.title}
                 </h3>
@@ -599,11 +599,11 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
                   <span className="font-semibold text-slate-900">You got {reportScore}.</span>
                   <span>{` ${reportBodyRest}`}</span>
                 </p>
-                <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
                   <button
                     type="button"
                     onClick={handleShare}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+                    className="inline-flex whitespace-nowrap items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
                   >
                     <Share2 className="h-4 w-4" />
                     <span>{copied ? copy.copied : copy.share}</span>
@@ -611,7 +611,7 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
                   <button
                     type="button"
                     onClick={handleRetry}
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50"
+                    className="inline-flex whitespace-nowrap items-center justify-center gap-2 rounded-full border border-white/70 bg-white/65 px-5 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-white/90 hover:bg-white/80"
                   >
                     <RotateCcw className="h-4 w-4" />
                     <span>{copy.retry}</span>
@@ -619,13 +619,13 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
                 </div>
               </div>
 
-              <div className="rounded-3xl border border-white/75 bg-white/70 p-5 shadow-sm backdrop-blur">
+              <div className="rounded-3xl border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0.16))] p-5 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl">
                 <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <h4 className="text-lg font-semibold text-slate-950">{copy.reviewTitle}</h4>
                   <button
                     type="button"
                     onClick={() => setReviewFilter((value) => (value === "all" ? "wrong" : "all"))}
-                    className="inline-flex w-fit items-center rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-100"
+                    className="inline-flex w-fit items-center rounded-full border border-white/70 bg-white/55 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-white/90 hover:bg-white/72"
                   >
                     {reviewFilter === "all"
                       ? `${copy.showWrongOnly} (${wrongCount})`
@@ -639,7 +639,7 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
                     .map(({ question, isCorrect }, index) => (
                       <details
                         key={question.id}
-                        className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4"
+                        className="rounded-2xl border border-white/75 bg-[linear-gradient(180deg,rgba(255,255,255,0.58),rgba(255,255,255,0.42))] p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)] backdrop-blur-md transition hover:border-white/90 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.66),rgba(255,255,255,0.5))]"
                       >
                         <summary className="flex cursor-pointer list-none items-start gap-3">
                           <span
@@ -666,7 +666,7 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
                             <span>{question.correctAnswer}</span>
                           </div>
                           {question.explanation ? (
-                            <div className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-[16px] leading-7 text-slate-700">
+                            <div className="rounded-xl border border-white/70 bg-white/55 px-4 py-3 text-[16px] leading-7 text-slate-700 backdrop-blur-sm">
                               <span className="font-semibold text-slate-900">{copy.explanationLabel}: </span>
                               <span>{question.explanation}</span>
                             </div>
@@ -683,32 +683,32 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
 
       <section className="relative overflow-hidden rounded-4xl border border-white/70 bg-[linear-gradient(135deg,#fff8ec_0%,#f5fbff_50%,#fffaf6_100%)] p-5 shadow-[0_30px_120px_rgba(15,23,42,0.08)] sm:p-6">
         <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.18),transparent_45%),radial-gradient(circle_at_bottom,rgba(56,189,248,0.18),transparent_35%)] lg:block" />
-        <div className="relative mb-4 flex flex-col gap-3 rounded-[1.4rem] border border-white/70 bg-white/45 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] backdrop-blur-xl sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-2">
+        <div className="relative mb-4 space-y-3 rounded-[1.4rem] border border-white/70 bg-white/45 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] backdrop-blur-xl">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">{copy.archiveTitle}</h2>
-            <p className="max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">{copy.archiveDescription}</p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowIncompleteOnly((value) => !value)}
-            aria-pressed={showIncompleteOnly}
-            className={`inline-flex items-center gap-3 self-start rounded-full border px-4 py-2 text-sm font-semibold transition ${
-              showIncompleteOnly
-                ? "border-slate-900 bg-slate-950 text-white"
-                : "border-slate-300 bg-white/85 text-slate-700 hover:border-slate-400 hover:bg-white"
-            }`}
-          >
-            <span
-              className={`flex h-5 w-5 items-center justify-center rounded border text-xs ${
+            <button
+              type="button"
+              onClick={() => setShowIncompleteOnly((value) => !value)}
+              aria-pressed={showIncompleteOnly}
+              className={`inline-flex items-center gap-3 self-start whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition ${
                 showIncompleteOnly
-                  ? "border-white/70 bg-white/15 text-white"
-                  : "border-slate-300 bg-white text-transparent"
+                  ? "border-slate-900 bg-slate-950 text-white"
+                  : "border-slate-300 bg-white/85 text-slate-700 hover:border-slate-400 hover:bg-white"
               }`}
             >
-              ✓
-            </span>
-            <span>{copy.archiveIncompleteOnly}</span>
-          </button>
+              <span
+                className={`flex h-5 w-5 items-center justify-center rounded border text-xs ${
+                  showIncompleteOnly
+                    ? "border-white/70 bg-white/15 text-white"
+                    : "border-slate-300 bg-white text-transparent"
+                }`}
+              >
+                ✓
+              </span>
+              <span>{copy.archiveIncompleteOnly}</span>
+            </button>
+          </div>
+          <p className="text-sm leading-7 text-slate-600 sm:text-base">{copy.archiveDescription}</p>
         </div>
 
         <div className="relative grid gap-3">
@@ -721,29 +721,27 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
                 key={item.date}
                 href={href}
                 onClick={() => handleArchiveClick(item.date, item.dayNumber)}
-                className="group rounded-[1.75rem] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.34))] p-4 shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-white/90 hover:bg-white/72 sm:p-5"
+                className="group rounded-[1.75rem] border border-white/45 bg-[linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.14))] p-4 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-md transition hover:-translate-y-0.5 hover:border-white/70 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.34),rgba(255,255,255,0.2))] sm:p-5"
               >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="space-y-3">
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium tracking-tight text-slate-500/90 sm:text-base">
-                        Daily Trivia - Day {item.dayNumber}
-                      </p>
-                      <p className="text-xs font-medium tracking-[0.08em] text-slate-400 sm:text-sm">
+                <div className="space-y-3">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <p className="text-sm font-medium tracking-tight text-slate-500/90 sm:text-base">
+                      Daily Trivia - Day {item.dayNumber}
+                      <span className="ml-2 text-xs font-medium tracking-[0.08em] text-slate-400 sm:text-sm">
                         {item.date}
-                      </p>
-                    </div>
-                    <p className="max-w-4xl text-base leading-7 font-medium tracking-tight text-slate-900 transition-colors group-hover:text-slate-950 sm:text-lg sm:leading-8">
-                      {item.firstQuestion}
-                    </p>
-                  </div>
-                  {completed ? (
-                    <div className="flex shrink-0 items-center gap-2">
-                      <span className="inline-flex items-center rounded-full border border-emerald-300/70 bg-emerald-50/70 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                        {copy.archiveCompleted}
                       </span>
-                    </div>
-                  ) : null}
+                    </p>
+                    {completed ? (
+                      <div className="flex shrink-0 items-center gap-2">
+                        <span className="inline-flex items-center rounded-full border border-emerald-300/70 bg-emerald-50/70 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                          {copy.archiveCompleted}
+                        </span>
+                      </div>
+                    ) : null}
+                  </div>
+                  <p className="text-base leading-7 font-medium tracking-tight text-slate-900 transition-colors group-hover:text-slate-950 sm:text-lg sm:leading-8">
+                    {item.firstQuestion}
+                  </p>
                 </div>
               </Link>
             );
