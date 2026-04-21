@@ -1,8 +1,6 @@
 import { i18n } from '@/i18n';
 import { appConfig } from '@/lib/appConfig';
 import { SiteIcon } from '@/lib/site-config';
-import { globalLucideIcons as icons } from '@windrun-huaiin/base-ui/components/server';
-import { ClerkUser } from '@windrun-huaiin/third-ui/clerk/server';
 import { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { getTranslations } from 'next-intl/server';
 import { CreditPopover } from '@/components/credit-popover';
@@ -16,29 +14,15 @@ export async function homeNavLinks(locale: string): Promise<ExtendedLinkItem[]> 
   const { userId } = await getOptionalAuth();
   return [
     {
-      icon: <icons.BugOff />,
       text: t1('blog'),
       url: getAsNeededLocalizedUrl(locale, '/blog'),
-    },
-    {
-      icon: <icons.BTC />,
-      text: t1('pricing'),
-      url: getAsNeededLocalizedUrl(locale, '/pricing'),
     },
     {
       type: 'custom',
       secondary: true,
       mobilePinned: true,
       children: userId ? <CreditPopover locale={locale} /> : null,
-    },
-    {
-      type: 'custom',
-      // false就先排左边的菜单, true就先排右边的按钮
-      secondary: true,
-      // true代表在移动端也会出现在主菜单栏上，不会被折叠
-      mobilePinned: true,
-      children: <ClerkUser locale={locale} clerkAuthInModal={appConfig.style.clerkAuthInModal} showSignUp={true}/>
-    },
+    }
   ];
 }
 

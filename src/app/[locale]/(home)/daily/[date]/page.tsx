@@ -55,7 +55,7 @@ export default async function DailyQuizPage({ params }: PageProps) {
 
   return (
     <section className="mx-auto mt-8 flex w-full max-w-6xl flex-col gap-8 px-4 py-6 sm:mt-10 sm:px-6 lg:px-8">
-      <div className="rounded-[2rem] border border-white/70 bg-[linear-gradient(135deg,#f6fbff_0%,#fff9ef_100%)] px-5 py-6 shadow-[0_24px_90px_rgba(15,23,42,0.08)] sm:px-8">
+      <div className="rounded-4xl border border-white/70 bg-[linear-gradient(135deg,#f6fbff_0%,#fff9ef_100%)] px-5 py-6 shadow-[0_24px_90px_rgba(15,23,42,0.08)] sm:px-8">
         <div className="grid gap-5">
           <div>
             <Link
@@ -110,8 +110,8 @@ export default async function DailyQuizPage({ params }: PageProps) {
           archiveTitle: t("archive.title"),
           archiveDescription: t("archive.description"),
           archiveCompleted: t("archive.completed"),
-          archiveOpen: t("archive.open"),
-          openQuiz: t("archive.openQuiz"),
+          archiveIncompleteOnly: t("archive.incompleteOnly"),
+          archiveEmpty: t("archive.empty"),
         }}
       />
     </section>

@@ -1,12 +1,16 @@
 import "server-only";
 
-import { prisma } from "@windrun-huaiin/backend-core/prisma";
+import { prisma as rawPrisma } from "@windrun-huaiin/backend-core/prisma";
 import { createAnswersUniverseClientFromEnv } from "@windrun-huaiin/faq-sdk";
 import type { OuterQuestionBaseItemDto } from "@windrun-huaiin/faq-sdk";
+import type { Prisma } from "@prisma/client";
 
 const DAY_ONE = "2026-04-01";
 
 const faqClient = createAnswersUniverseClientFromEnv();
+const dailyQuestionSchedule = (rawPrisma as typeof rawPrisma & {
+  dailyQuestionSchedule: Prisma.DailyQuestionScheduleDelegate;
+}).dailyQuestionSchedule;
 
 export type DailyQuizQuestion = {
   id: string;
@@ -89,7 +93,7 @@ export function isValidTriviaDate(date: string) {
 }
 
 export async function getDailyQuizByDate(date: string): Promise<DailyQuizPayload | null> {
-  const schedule = await prisma.dailyQuestionSchedule.findMany({
+  const schedule = await dailyQuestionSchedule.findMany({
     where: {
       showDate: toUtcDateOnly(date),
     },
@@ -131,7 +135,7 @@ export async function getTodayDailyQuiz() {
 }
 
 export async function getArchiveDays(): Promise<ArchiveDayItem[]> {
-  const schedule = await prisma.dailyQuestionSchedule.findMany({
+  const schedule = await dailyQuestionSchedule.findMany({
     where: {
       asFirst: 1,
     },

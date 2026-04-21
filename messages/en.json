@@ -17,8 +17,8 @@
   },
   "trivia": {
     "eyebrow": "Daily Trivia",
-    "title": "Five fresh questions every day, served in a calm learning-first format.",
-    "description": "Each day unlocks a new five-question set. Answer in order, review the explanations, and revisit any date from the archive when you want another short knowledge session.",
+    "title": "Five handpicked questions, every day.",
+    "description": "Built to spark your curiosity in just a few minutes.",
     "primaryCta": "Play today’s set",
     "subtleNote": "SSR-loaded questions, UTC+0 schedule, mobile-friendly flow",
     "previewEyebrow": "Today’s preview",
@@ -37,26 +37,26 @@
       "viewReport": "View report"
     },
     "report": {
-      "eyebrow": "Daily report",
-      "titlePerfect": "Perfect score",
-      "titleStrong": "Strong finish",
-      "titleNice": "Nice run",
-      "copyPerfect": "You got {score}. Every question landed, and the explanations are ready below for a quick review.",
-      "copyStrong": "You got {score}. A few misses, but the report makes it easy to review what mattered.",
-      "copyNice": "You got {score}. Use the review below to fill the gaps and keep the streak moving.",
+      "eyebrow": "Curiosity unlocked",
+      "titlePerfect": "Nice work. You finished today’s curiosity run.",
+      "titleStrong": "Nice work. You finished today’s curiosity run.",
+      "titleNice": "Nice work. You finished today’s curiosity run.",
+      "copyPerfect": "You got {score}. A clean sweep today. The full review is right below.",
+      "copyStrong": "You got {score}. The full review is right below.",
+      "copyNice": "You got {score}. The full review is right below.",
       "reviewTitle": "Question review",
       "showWrongOnly": "Show wrong only",
       "showAll": "Show all",
-      "share": "Share result",
+      "share": "Share",
       "copied": "Copied",
       "retry": "Retry"
     },
     "archive": {
       "title": "Browse earlier days",
-      "description": "Each archive card links to the full five-question set for that date. The teaser below is always that day’s first question.",
+      "description": "Here are the opening questions from each archived Daily Trivia quiz. Click any card to jump into that day's full set.",
       "completed": "Completed",
-      "open": "Not played",
-      "openQuiz": "Open quiz"
+      "incompleteOnly": "Hide complete days",
+      "empty": "All archived days are completed. Turn off the filter to browse the full archive again."
     },
     "detail": {
       "backHome": "Back to home",
