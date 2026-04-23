@@ -1,20 +1,21 @@
 import { getTranslations } from "next-intl/server";
 import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib";
+import { DailyQuizArchive } from "@/components/daily-quiz-archive";
 import { DailyQuizClient } from "@/components/daily-quiz-client";
-import { getArchiveDays, getTodayDailyQuiz } from "@/lib/trivia";
+import { getArchiveDays, getLatestAvailableDailyQuiz } from "@/lib/trivia";
 
 export async function Hero({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "trivia" });
-  const [quiz, archiveDays] = await Promise.all([getTodayDailyQuiz(), getArchiveDays()]);
+  const [quiz, archiveDays] = await Promise.all([getLatestAvailableDailyQuiz(), getArchiveDays()]);
   const basePath = getAsNeededLocalizedUrl(locale, "");
 
   return (
     <section className="mx-auto mt-15 flex w-full max-w-6xl flex-col gap-5 px-4 py-3 sm:mt-15 sm:px-6 sm:py-4 lg:gap-6 lg:px-8">
-      <div className="max-w-3xl space-y-2 py-1 sm:py-2">
+      <div className="mx-auto max-w-4xl space-y-2 py-1 text-center sm:py-2">
         <h1 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
           {t("title")}
         </h1>
-        <p className="max-w-2xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
+        <p className="mx-auto max-w-3xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
           {t("description")}
         </p>
       </div>
@@ -23,8 +24,6 @@ export async function Hero({ locale }: { locale: string }) {
         <div id="today-quiz">
           <DailyQuizClient
             quiz={quiz}
-            archiveDays={archiveDays}
-            basePath={basePath}
             copy={{
               progressLabel: t("quiz.progressLabel"),
               questionLabel: t("quiz.questionLabel"),
@@ -36,9 +35,7 @@ export async function Hero({ locale }: { locale: string }) {
               nextQuestion: t("quiz.nextQuestion"),
               viewReport: t("quiz.viewReport"),
               reportEyebrow: t("report.eyebrow"),
-              reportTitlePerfect: t("report.titlePerfect"),
-              reportTitleStrong: t("report.titleStrong"),
-              reportTitleNice: t("report.titleNice"),
+              reportTitle: t("report.title"),
               reportCopyPerfect: t("report.copyPerfect", { score: "{score}" }),
               reportCopyStrong: t("report.copyStrong", { score: "{score}" }),
               reportCopyNice: t("report.copyNice", { score: "{score}" }),
@@ -48,11 +45,6 @@ export async function Hero({ locale }: { locale: string }) {
               share: t("report.share"),
               copied: t("report.copied"),
               retry: t("report.retry"),
-              archiveTitle: t("archive.title"),
-              archiveDescription: t("archive.description"),
-              archiveCompleted: t("archive.completed"),
-              archiveIncompleteOnly: t("archive.incompleteOnly"),
-              archiveEmpty: t("archive.empty"),
             }}
           />
         </div>
@@ -64,6 +56,18 @@ export async function Hero({ locale }: { locale: string }) {
           </div>
         </div>
       )}
+
+      <DailyQuizArchive
+        archiveDays={archiveDays}
+        basePath={basePath}
+        copy={{
+          archiveTitle: t("archive.title"),
+          archiveDescription: t("archive.description"),
+          archiveCompleted: t("archive.completed"),
+          archiveIncompleteOnly: t("archive.incompleteOnly"),
+          archiveEmpty: t("archive.empty"),
+        }}
+      />
     </section>
   );
 }

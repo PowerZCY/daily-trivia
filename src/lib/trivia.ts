@@ -92,6 +92,14 @@ export function isValidTriviaDate(date: string) {
   return !Number.isNaN(parsed.getTime()) && formatUtcDate(parsed) === date;
 }
 
+export function isFutureTriviaDate(date: string) {
+  if (!isValidTriviaDate(date)) {
+    return false;
+  }
+
+  return date > getTodayUtcDate();
+}
+
 export async function getDailyQuizByDate(date: string): Promise<DailyQuizPayload | null> {
   const schedule = await dailyQuestionSchedule.findMany({
     where: {
@@ -132,6 +140,30 @@ export async function getDailyQuizByDate(date: string): Promise<DailyQuizPayload
 
 export async function getTodayDailyQuiz() {
   return getDailyQuizByDate(getTodayUtcDate());
+}
+
+export async function getLatestAvailableDailyQuiz(): Promise<DailyQuizPayload | null> {
+  const candidates = await dailyQuestionSchedule.findMany({
+    where: {
+      asFirst: 1,
+      showDate: {
+        lte: toUtcDateOnly(getTodayUtcDate()),
+      },
+    },
+    orderBy: {
+      showDate: "desc",
+    },
+    take: 30,
+  });
+
+  for (const candidate of candidates) {
+    const quiz = await getDailyQuizByDate(formatUtcDate(candidate.showDate));
+    if (quiz) {
+      return quiz;
+    }
+  }
+
+  return null;
 }
 
 export async function getArchiveDays(): Promise<ArchiveDayItem[]> {

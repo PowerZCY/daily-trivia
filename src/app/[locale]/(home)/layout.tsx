@@ -31,7 +31,7 @@ export default async function Layout({
       enabled: false,
     },
     themeSwitch: {
-      enabled: true,
+      enabled: false,
       mode: 'light-dark-system',
     },
   };

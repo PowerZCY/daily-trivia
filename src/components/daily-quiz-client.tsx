@@ -1,16 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import confetti from "canvas-confetti";
 import { Check, ChevronRight, RotateCcw, Share2, X } from "lucide-react";
-import type { ArchiveDayItem, DailyQuizPayload } from "@/lib/trivia";
+import type { DailyQuizPayload } from "@/lib/trivia";
 
 type Props = {
   quiz: DailyQuizPayload;
-  archiveDays: ArchiveDayItem[];
-  basePath: string;
   copy: {
     progressLabel: string;
     questionLabel: string;
@@ -22,9 +19,7 @@ type Props = {
     nextQuestion: string;
     viewReport: string;
     reportEyebrow: string;
-    reportTitlePerfect: string;
-    reportTitleStrong: string;
-    reportTitleNice: string;
+    reportTitle: string;
     reportCopyPerfect: string;
     reportCopyStrong: string;
     reportCopyNice: string;
@@ -34,11 +29,6 @@ type Props = {
     share: string;
     copied: string;
     retry: string;
-    archiveTitle: string;
-    archiveDescription: string;
-    archiveCompleted: string;
-    archiveIncompleteOnly: string;
-    archiveEmpty: string;
   };
 };
 
@@ -63,6 +53,10 @@ function getQuizStorageKey(date: string) {
 
 function getCompletedDaysKey() {
   return "daily-trivia:completed-days";
+}
+
+function getCompletedDaysChangedEventName() {
+  return "daily-trivia:completed-days-changed";
 }
 
 function createSeededRandom(seed: string) {
@@ -141,30 +135,32 @@ function writeCompletedDay(date: string) {
     return;
   }
   window.localStorage.setItem(getCompletedDaysKey(), JSON.stringify([...current, date]));
+  window.dispatchEvent(new Event(getCompletedDaysChangedEventName()));
 }
 
 function removeCompletedDay(date: string) {
   const current = readCompletedDays().filter((item) => item !== date);
   window.localStorage.setItem(getCompletedDaysKey(), JSON.stringify(current));
+  window.dispatchEvent(new Event(getCompletedDaysChangedEventName()));
 }
 
 function getScoreTitle(score: number, total: number, copy: Props["copy"]) {
   if (score === total) {
     return {
-      title: copy.reportTitlePerfect,
+      title: copy.reportTitle,
       body: copy.reportCopyPerfect,
     };
   }
 
   if (score >= Math.ceil(total * 0.7)) {
     return {
-      title: copy.reportTitleStrong,
+      title: copy.reportTitle,
       body: copy.reportCopyStrong,
     };
   }
 
   return {
-    title: copy.reportTitleNice,
+    title: copy.reportTitle,
     body: copy.reportCopyNice,
   };
 }
@@ -173,6 +169,7 @@ function buildShareLink() {
   const url = new URL(window.location.href);
   url.protocol = "https:";
   url.searchParams.set("ref", "share");
+  url.hash = "";
   return url.toString();
 }
 
@@ -196,7 +193,7 @@ function formatReportCopy(body: string, score: string) {
   return `You got ${score}. ${normalizedBody}`;
 }
 
-export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
+export function DailyQuizClient({ quiz, copy }: Props) {
   const totalQuestions = quiz.questions.length;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
@@ -204,8 +201,6 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showReport, setShowReport] = useState(false);
   const [reviewFilter, setReviewFilter] = useState<"all" | "wrong">("all");
-  const [completedDays, setCompletedDays] = useState<string[]>([]);
-  const [showIncompleteOnly, setShowIncompleteOnly] = useState(false);
   const [hasTrackedStart, setHasTrackedStart] = useState(false);
   const [copied, setCopied] = useState(false);
   const confettiTimerRef = useRef<number | null>(null);
@@ -227,7 +222,6 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
   useEffect(() => {
     const saved = readCompletion(quiz.date);
     Promise.resolve().then(() => {
-      setCompletedDays(readCompletedDays());
       if (!saved) {
         return;
       }
@@ -276,10 +270,6 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
   const reportBodyRest = reportBody.startsWith(`You got ${reportScore}. `)
     ? reportBody.slice(`You got ${reportScore}. `.length)
     : reportBody;
-  const visibleArchiveDays = useMemo(
-    () => archiveDays.filter((item) => (showIncompleteOnly ? !completedDays.includes(item.date) : true)),
-    [archiveDays, completedDays, showIncompleteOnly],
-  );
 
   function saveFinishedQuiz(nextAnswers: AnswerState[], nextCorrectCount: number) {
     writeCompletion({
@@ -289,7 +279,6 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
       answers: nextAnswers,
     });
     writeCompletedDay(quiz.date);
-    setCompletedDays(readCompletedDays());
   }
 
   function triggerQuizConfetti() {
@@ -321,7 +310,18 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
             scalar: 0.75,
             ticks: 170,
             origin: { x: 0, y: 0.7 },
-            colors: ["#F59E0B", "#FBBF24", "#FB7185", "#38BDF8", "#34D399"],
+            colors: [
+              "#F59E0B",
+              "#FBBF24",
+              "#FB7185",
+              "#38BDF8",
+              "#34D399",
+              "#F97316",
+              "#FDE68A",
+              "#EC4899",
+              "#0EA5E9",
+              "#2DD4BF",
+            ],
             zIndex: 2147483647,
           });
         } else {
@@ -441,7 +441,6 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
     });
     window.localStorage.removeItem(getQuizStorageKey(quiz.date));
     removeCompletedDay(quiz.date);
-    setCompletedDays(readCompletedDays());
     setCurrentIndex(0);
     setCorrectCount(0);
     setAnswers([]);
@@ -452,17 +451,8 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
     setHasTrackedStart(false);
   }
 
-  function handleArchiveClick(date: string, dayNumber: number) {
-    trackGaEvent("archive_card_clicked", {
-      date,
-      day_number: dayNumber,
-      completed: completedDays.includes(date),
-    });
-  }
-
   return (
-    <div className="grid gap-6 sm:gap-8">
-      <section className="relative overflow-hidden rounded-4xl border border-white/70 bg-[linear-gradient(135deg,#fff8ec_0%,#f5fbff_50%,#fffaf6_100%)] p-3 sm:p-4 shadow-[0_30px_120px_rgba(15,23,42,0.08)] xl:p-6">
+    <section className="relative overflow-hidden rounded-4xl border border-white/70 bg-[linear-gradient(135deg,#fff8ec_0%,#f5fbff_50%,#fffaf6_100%)] p-3 shadow-[0_30px_120px_rgba(15,23,42,0.08)] sm:p-4 xl:p-6">
         <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.18),transparent_45%),radial-gradient(circle_at_bottom,rgba(56,189,248,0.18),transparent_35%)] lg:block" />
         <div className="relative p-1">
           <div
@@ -619,7 +609,7 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
                 </div>
               </div>
 
-              <div className="rounded-3xl border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0.16))] p-5 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl">
+              <div className="rounded-3xl border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0.16))] p-4 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl sm:p-5">
                 <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <h4 className="text-lg font-semibold text-slate-950">{copy.reviewTitle}</h4>
                   <button
@@ -639,34 +629,34 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
                     .map(({ question, isCorrect }, index) => (
                       <details
                         key={question.id}
-                        className="rounded-2xl border border-white/75 bg-[linear-gradient(180deg,rgba(255,255,255,0.58),rgba(255,255,255,0.42))] p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)] backdrop-blur-md transition hover:border-white/90 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.66),rgba(255,255,255,0.5))]"
+                        className="rounded-2xl border border-white/75 bg-[linear-gradient(180deg,rgba(255,255,255,0.58),rgba(255,255,255,0.42))] p-3 shadow-[0_12px_32px_rgba(15,23,42,0.05)] backdrop-blur-md transition hover:border-white/90 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.66),rgba(255,255,255,0.5))] sm:p-4"
                       >
-                        <summary className="flex cursor-pointer list-none items-start gap-3">
+                        <summary className="flex cursor-pointer list-none items-start gap-2 sm:gap-3">
                           <span
-                            className={`mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-full ${
+                            className={`mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full sm:h-6 sm:w-6 ${
                               isCorrect
                                 ? "bg-emerald-100 text-emerald-700"
                                 : "bg-rose-100 text-rose-700"
                             }`}
                           >
-                            {isCorrect ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />}
+                            {isCorrect ? <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                           </span>
-                          <span className="flex-1 text-[18px] font-medium leading-7 text-slate-900">
+                          <span className="flex-1 text-[15px] font-medium leading-6 text-slate-900 sm:text-[18px] sm:leading-7">
                             Q{index + 1}. {question.question}
                           </span>
                         </summary>
-                        <div className="mt-4 grid gap-3 pl-9">
+                        <div className="mt-3 grid gap-2.5 pl-0 sm:mt-4 sm:gap-3 sm:pl-9">
                           {question.category ? (
                             <div className="inline-flex w-fit items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
                               {question.category}
                             </div>
                           ) : null}
-                          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-[16px] leading-7 text-slate-800">
+                          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-[15px] leading-6 text-slate-800 sm:px-4 sm:py-3 sm:text-[16px] sm:leading-7">
                             <span className="font-semibold text-slate-900">{copy.correctLabel}: </span>
                             <span>{question.correctAnswer}</span>
                           </div>
                           {question.explanation ? (
-                            <div className="rounded-xl border border-white/70 bg-white/55 px-4 py-3 text-[16px] leading-7 text-slate-700 backdrop-blur-sm">
+                            <div className="rounded-xl border border-white/70 bg-white/55 px-3 py-2.5 text-[15px] leading-6 text-slate-700 backdrop-blur-sm sm:px-4 sm:py-3 sm:text-[16px] sm:leading-7">
                               <span className="font-semibold text-slate-900">{copy.explanationLabel}: </span>
                               <span>{question.explanation}</span>
                             </div>
@@ -679,81 +669,6 @@ export function DailyQuizClient({ quiz, archiveDays, basePath, copy }: Props) {
             </div>
           )}
         </div>
-      </section>
-
-      <section className="relative overflow-hidden rounded-4xl border border-white/70 bg-[linear-gradient(135deg,#fff8ec_0%,#f5fbff_50%,#fffaf6_100%)] p-5 shadow-[0_30px_120px_rgba(15,23,42,0.08)] sm:p-6">
-        <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.18),transparent_45%),radial-gradient(circle_at_bottom,rgba(56,189,248,0.18),transparent_35%)] lg:block" />
-        <div className="relative mb-4 space-y-3 rounded-[1.4rem] border border-white/70 bg-white/45 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] backdrop-blur-xl">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">{copy.archiveTitle}</h2>
-            <button
-              type="button"
-              onClick={() => setShowIncompleteOnly((value) => !value)}
-              aria-pressed={showIncompleteOnly}
-              className={`inline-flex items-center gap-3 self-start whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                showIncompleteOnly
-                  ? "border-slate-900 bg-slate-950 text-white"
-                  : "border-slate-300 bg-white/85 text-slate-700 hover:border-slate-400 hover:bg-white"
-              }`}
-            >
-              <span
-                className={`flex h-5 w-5 items-center justify-center rounded border text-xs ${
-                  showIncompleteOnly
-                    ? "border-white/70 bg-white/15 text-white"
-                    : "border-slate-300 bg-white text-transparent"
-                }`}
-              >
-                ✓
-              </span>
-              <span>{copy.archiveIncompleteOnly}</span>
-            </button>
-          </div>
-          <p className="text-sm leading-7 text-slate-600 sm:text-base">{copy.archiveDescription}</p>
-        </div>
-
-        <div className="relative grid gap-3">
-          {visibleArchiveDays.length ? (
-            visibleArchiveDays.map((item) => {
-            const href = `${basePath}/daily/${item.date}`;
-            const completed = completedDays.includes(item.date);
-            return (
-              <Link
-                key={item.date}
-                href={href}
-                onClick={() => handleArchiveClick(item.date, item.dayNumber)}
-                className="group rounded-[1.75rem] border border-white/45 bg-[linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.14))] p-4 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-md transition hover:-translate-y-0.5 hover:border-white/70 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.34),rgba(255,255,255,0.2))] sm:p-5"
-              >
-                <div className="space-y-3">
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                    <p className="text-sm font-medium tracking-tight text-slate-500/90 sm:text-base">
-                      Daily Trivia - Day {item.dayNumber}
-                      <span className="ml-2 text-xs font-medium tracking-[0.08em] text-slate-400 sm:text-sm">
-                        {item.date}
-                      </span>
-                    </p>
-                    {completed ? (
-                      <div className="flex shrink-0 items-center gap-2">
-                        <span className="inline-flex items-center rounded-full border border-emerald-300/70 bg-emerald-50/70 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                          {copy.archiveCompleted}
-                        </span>
-                      </div>
-                    ) : null}
-                  </div>
-                  <p className="text-base leading-7 font-medium tracking-tight text-slate-900 transition-colors group-hover:text-slate-950 sm:text-lg sm:leading-8">
-                    {item.firstQuestion}
-                  </p>
-                </div>
-              </Link>
-            );
-            })
-          ) : (
-            <div className="rounded-3xl border border-white/70 bg-white/40 p-5 text-sm leading-7 text-slate-600 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl sm:text-base">
-              {copy.archiveEmpty}
-            </div>
-          )}
-        </div>
-      </section>
-
-    </div>
+    </section>
   );
 }

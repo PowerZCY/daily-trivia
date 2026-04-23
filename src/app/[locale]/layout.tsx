@@ -20,15 +20,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await paramsPromise;
-  const [tHome, tTrivia] = await Promise.all([
-    getTranslations({ locale, namespace: 'home' }),
-    getTranslations({ locale, namespace: 'trivia.metadata' }),
-  ]);
+  const tHome = await getTranslations({ locale, namespace: 'home' });
 
   return {
-    title: tTrivia('homeTitle'),
-    description: tTrivia('homeDescription'),
-    keywords: [tHome('keywords'), tTrivia('keywords')].join(', '),
+    title: tHome('webTitle'),
+    description: tHome('webDescription'),
+    keywords: tHome('keywords'),
     alternates: {
       canonical: `${appConfig.baseUrl}${getAsNeededLocalizedUrl(locale, '/')}`,
       languages: {

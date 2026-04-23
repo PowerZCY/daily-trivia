@@ -1,5 +1,3 @@
-import { i18n } from '@/i18n';
-import { appConfig } from '@/lib/appConfig';
 import { SiteIcon } from '@/lib/site-config';
 import { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { getTranslations } from 'next-intl/server';
@@ -47,7 +45,5 @@ export async function baseOptions(locale: string): Promise<BaseLayoutProps> {
       ),
       transparentMode: 'none',
     },
-    i18n,
-    githubUrl: appConfig.github,
   };
 }

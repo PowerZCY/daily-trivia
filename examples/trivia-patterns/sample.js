@@ -347,21 +347,6 @@ function clearCompletion() {
   renderQuiz();
 }
 
-function groupCategoryStats(history) {
-  const stats = {};
-  history.forEach((record) => {
-    if (!stats[record.category]) {
-      stats[record.category] = { correct: 0, total: 0 };
-    }
-
-    stats[record.category].total += 1;
-    if (record.isCorrect) {
-      stats[record.category].correct += 1;
-    }
-  });
-  return stats;
-}
-
 function getCompletedDays() {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.archiveCompleted) || "[]");
