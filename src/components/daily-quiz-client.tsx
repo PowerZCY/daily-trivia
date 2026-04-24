@@ -194,17 +194,20 @@ function formatReportCopy(body: string, score: string) {
 }
 
 export function DailyQuizClient({ quiz, copy }: Props) {
+  const finalRevealDurationMs = 1500;
   const totalQuestions = quiz.questions.length;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [answers, setAnswers] = useState<AnswerState[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showReport, setShowReport] = useState(false);
+  const [isFinishingQuiz, setIsFinishingQuiz] = useState(false);
   const [reviewFilter, setReviewFilter] = useState<"all" | "wrong">("all");
   const [hasTrackedStart, setHasTrackedStart] = useState(false);
   const [copied, setCopied] = useState(false);
   const confettiTimerRef = useRef<number | null>(null);
   const confettiFrameRef = useRef<number | null>(null);
+  const finalRevealTimerRef = useRef<number | null>(null);
 
   const currentQuestion = quiz.questions[currentIndex];
 
@@ -245,6 +248,10 @@ export function DailyQuizClient({ quiz, copy }: Props) {
 
   useEffect(() => {
     return () => {
+      if (finalRevealTimerRef.current !== null) {
+        window.clearTimeout(finalRevealTimerRef.current);
+      }
+
       if (confettiTimerRef.current !== null) {
         window.clearTimeout(confettiTimerRef.current);
       }
@@ -392,9 +399,17 @@ export function DailyQuizClient({ quiz, copy }: Props) {
 
     if (currentIndex === totalQuestions - 1) {
       saveFinishedQuiz(nextAnswers, nextCorrectCount);
-      triggerQuizConfetti();
-      setShowReport(true);
-      setCurrentIndex(totalQuestions);
+      setIsFinishingQuiz(true);
+      if (finalRevealTimerRef.current !== null) {
+        window.clearTimeout(finalRevealTimerRef.current);
+      }
+      finalRevealTimerRef.current = window.setTimeout(() => {
+        setShowReport(true);
+        setCurrentIndex(totalQuestions);
+        setIsFinishingQuiz(false);
+        triggerQuizConfetti();
+        finalRevealTimerRef.current = null;
+      }, finalRevealDurationMs);
       trackGaEvent("daily_quiz_completed", {
         date: quiz.date,
         day_number: quiz.dayNumber,
@@ -439,6 +454,10 @@ export function DailyQuizClient({ quiz, copy }: Props) {
       day_number: quiz.dayNumber,
       score: correctCount,
     });
+    if (finalRevealTimerRef.current !== null) {
+      window.clearTimeout(finalRevealTimerRef.current);
+      finalRevealTimerRef.current = null;
+    }
     window.localStorage.removeItem(getQuizStorageKey(quiz.date));
     removeCompletedDay(quiz.date);
     setCurrentIndex(0);
@@ -446,6 +465,7 @@ export function DailyQuizClient({ quiz, copy }: Props) {
     setAnswers([]);
     setSelectedAnswer(null);
     setShowReport(false);
+    setIsFinishingQuiz(false);
     setReviewFilter("all");
     setCopied(false);
     setHasTrackedStart(false);
@@ -562,6 +582,7 @@ export function DailyQuizClient({ quiz, copy }: Props) {
                       <button
                         type="button"
                         onClick={goNext}
+                        disabled={isFinishingQuiz}
                         className="inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-slate-900 bg-slate-950 px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(15,23,42,0.18)] transition hover:-translate-y-0.5 hover:bg-slate-800"
                       >
                         <span>{currentIndex === totalQuestions - 1 ? copy.viewReport : copy.nextQuestion}</span>
