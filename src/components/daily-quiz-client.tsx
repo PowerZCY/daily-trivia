@@ -454,97 +454,96 @@ export function DailyQuizClient({ quiz, copy }: Props) {
   return (
     <section className="relative overflow-hidden rounded-4xl border border-white/70 bg-[linear-gradient(135deg,#fff8ec_0%,#f5fbff_50%,#fffaf6_100%)] p-3 shadow-[0_30px_120px_rgba(15,23,42,0.08)] sm:p-4 xl:p-6">
         <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.18),transparent_45%),radial-gradient(circle_at_bottom,rgba(56,189,248,0.18),transparent_35%)] lg:block" />
-        <div className="relative p-1">
-          <div
-            className={`flex flex-col gap-2 border-b border-white/45 sm:flex-row sm:items-start sm:justify-between sm:gap-3 ${
-              showReport ? "mb-2.5 pb-2.5 sm:mb-3 sm:pb-3" : "mb-3 pb-3 sm:mb-4 sm:pb-4"
-            }`}
-          >
-            <div className="space-y-1.5 sm:space-y-2">
-              <div className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-amber-700">
-                Day {quiz.dayNumber}
-              </div>
-              <div>
-                <h2 className="text-xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
-                  {quiz.date}
-                </h2>
-              </div>
-            </div>
-
-            {!showReport ? (
-              <div className="inline-flex items-center gap-2 self-start rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-700 sm:gap-3 sm:px-4 sm:py-2">
-                <Check className="h-4 w-4" />
-                <span>
-                  {copy.correctLabel}: {correctCount}/{totalQuestions}
-                </span>
-              </div>
-            ) : null}
-          </div>
-
+        <div className="relative">
           {!showReport && currentQuestion ? (
             <div className="grid gap-3 sm:gap-4">
-              <div className="grid gap-1.5 sm:gap-2">
-                <div className="flex flex-col gap-1.5 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
-                  <span>
-                    {copy.questionLabel} {currentIndex + 1}/{totalQuestions}
-                  </span>
-                  {currentQuestion.category ? (
-                    <span className="inline-flex w-fit items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
-                      {copy.categoryLabel}: {currentQuestion.category}
+              <div className="grid gap-2 sm:gap-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="text-[22px] font-semibold leading-none tracking-tight text-slate-950 sm:text-[30px]">
+                      Day {quiz.dayNumber}
+                    </div>
+                    <h2 className="mt-1 text-[15px] font-medium tracking-tight text-slate-950/75 sm:mt-1.5 sm:text-[16px]">
+                      {quiz.date}
+                    </h2>
+                  </div>
+
+                  <div className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 sm:gap-2 sm:px-3 sm:py-1.5 sm:text-[16px]">
+                    <Check className="h-4 w-4 sm:h-4 sm:w-4" />
+                    <span>
+                      {copy.correctLabel}: {correctCount}/{totalQuestions}
                     </span>
-                  ) : null}
+                  </div>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-slate-200">
-                  <div
-                    className="h-full rounded-full bg-[linear-gradient(90deg,#f59e0b,#ec4899)] transition-all"
-                    style={{ width: `${((currentIndex + 1) / totalQuestions) * 100}%` }}
-                  />
+
+                <div className="grid gap-1 sm:gap-1.5">
+                  <div className="flex items-end justify-between gap-3 text-xs text-slate-600 sm:text-[16px]">
+                    <span className="font-medium text-slate-700">
+                      {copy.questionLabel} {currentIndex + 1}/{totalQuestions}
+                    </span>
+                    {currentQuestion.category ? (
+                      <span className="text-right">
+                        {copy.categoryLabel}: <span className="text-inherit">{currentQuestion.category}</span>
+                      </span>
+                    ) : null}
+                  </div>
+                  <div className="h-1.5 overflow-hidden rounded-full bg-slate-200/70 sm:h-2.5">
+                    <div
+                      className="h-full rounded-full bg-[linear-gradient(90deg,#f59e0b,#ec4899)] transition-all"
+                      style={{ width: `${((currentIndex + 1) / totalQuestions) * 100}%` }}
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div className="rounded-3xl border border-white/65 bg-white/42 p-4 sm:p-5 shadow-sm backdrop-blur-md">
-                <h3 className="text-[17px] font-semibold leading-7 text-slate-950 sm:text-2xl sm:leading-8">
+              <div className="rounded-3xl border border-white/65 bg-white/42 p-3.5 shadow-sm backdrop-blur-md sm:p-5">
+                <h3 className="text-base font-semibold leading-6 text-slate-950 sm:text-2xl sm:leading-8">
                   {currentQuestion.question}
                 </h3>
+
+                <div className="mt-3 grid gap-2.5 sm:mt-5 sm:gap-3 md:grid-cols-2">
+                  <div
+                    className="contents"
+                  >
+                    {options.map((answer, index) => {
+                      const hasAnswered = selectedAnswer !== null;
+                      const isCorrect = answer === currentQuestion.correctAnswer;
+                      const isSelected = answer === selectedAnswer;
+                      const baseClass =
+                        "flex min-h-11 items-start rounded-2xl border px-3 py-2.5 text-left text-sm font-medium leading-5 transition sm:min-h-14 sm:px-4 sm:py-3 sm:text-base sm:leading-6";
+                      const stateClass = hasAnswered
+                        ? isCorrect
+                          ? "border-emerald-300 bg-emerald-50 text-emerald-900"
+                          : isSelected
+                            ? "border-rose-300 bg-rose-50 text-rose-900"
+                            : "border-slate-200 bg-slate-50 text-slate-500"
+                        : "border-slate-200 bg-white text-slate-800 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50";
+
+                      return (
+                        <button
+                          key={answer}
+                          type="button"
+                          disabled={hasAnswered}
+                          onClick={() => handleAnswer(answer)}
+                          className={`${baseClass} ${stateClass}`}
+                        >
+                          <span className="mr-3 font-semibold text-slate-400">{String.fromCharCode(65 + index)}.</span>
+                          <span>{answer}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 {currentQuestion.questionImageUrl ? (
                   <Image
                     src={currentQuestion.questionImageUrl}
                     alt={currentQuestion.question}
                     width={1200}
                     height={675}
-                    className="mt-3 h-auto w-full rounded-2xl border border-slate-200 object-cover sm:mt-4"
+                    className="mt-3 h-44 w-full rounded-2xl border border-slate-200 object-cover sm:mt-5 sm:h-64 lg:h-72"
                   />
                 ) : null}
-
-                <div className="mt-4 grid gap-2.5 sm:mt-6 sm:gap-3 md:grid-cols-2">
-                  {options.map((answer, index) => {
-                    const hasAnswered = selectedAnswer !== null;
-                    const isCorrect = answer === currentQuestion.correctAnswer;
-                    const isSelected = answer === selectedAnswer;
-                    const baseClass =
-                      "flex min-h-12 items-start rounded-2xl border px-3.5 py-2.5 text-left text-sm font-medium leading-5 transition sm:min-h-14 sm:px-4 sm:py-3 sm:text-base sm:leading-6";
-                    const stateClass = hasAnswered
-                      ? isCorrect
-                        ? "border-emerald-300 bg-emerald-50 text-emerald-900"
-                        : isSelected
-                          ? "border-rose-300 bg-rose-50 text-rose-900"
-                          : "border-slate-200 bg-slate-50 text-slate-500"
-                      : "border-slate-200 bg-white text-slate-800 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50";
-
-                    return (
-                      <button
-                        key={answer}
-                        type="button"
-                        disabled={hasAnswered}
-                        onClick={() => handleAnswer(answer)}
-                        className={`${baseClass} ${stateClass}`}
-                      >
-                        <span className="mr-3 font-semibold text-slate-400">{String.fromCharCode(65 + index)}.</span>
-                        <span>{answer}</span>
-                      </button>
-                    );
-                  })}
-                </div>
 
                 {selectedAnswer ? (
                   <div

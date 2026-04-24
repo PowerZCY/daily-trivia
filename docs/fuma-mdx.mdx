@@ -9,6 +9,25 @@ date: 2025-06-23
   所有需要的语法和工具, 都在这儿
 </Callout>
 
+## Blog Writing Requirements
+
+<Callout title="博客内容要求" type="info">
+1. 围绕给定的题目来写, 不只是公布答案, 要从一个**有意思的角度**切入
+2. 在答案之外, 为用户提供更多**基于事实的背景信息**, 帮助理解这个知识点为什么成立、为什么值得记住
+3. 文章结尾需要**自然地**引入回到主页继续答题的组件, 不要生硬插入
+</Callout>
+
+```mdx title="博客结尾引导组件示例"
+<Callout type="success">
+  **Want more daily trivia like this?** Head to the homepage to start today’s trivia or browse past trivia questions and keep learning one fact at a time.
+  <GradientButton
+    title="Start Today’s Trivia"
+    href="/"
+    align="center"
+  />
+</Callout>
+```
+
 <ImageGrid 
 type="url"
 images={[

@@ -5,7 +5,10 @@ import { DailyQuizClient } from "@/components/daily-quiz-client";
 import { getArchiveDays, getLatestAvailableDailyQuiz } from "@/lib/trivia";
 
 export async function Hero({ locale }: { locale: string }) {
-  const t = await getTranslations({ locale, namespace: "trivia" });
+  const [t, quizT] = await Promise.all([
+    getTranslations({ locale, namespace: "hero" }),
+    getTranslations({ locale, namespace: "quiz" }),
+  ]);
   const [quiz, archiveDays] = await Promise.all([getLatestAvailableDailyQuiz(), getArchiveDays()]);
   const basePath = getAsNeededLocalizedUrl(locale, "");
 
@@ -25,26 +28,26 @@ export async function Hero({ locale }: { locale: string }) {
           <DailyQuizClient
             quiz={quiz}
             copy={{
-              progressLabel: t("quiz.progressLabel"),
-              questionLabel: t("quiz.questionLabel"),
-              correctLabel: t("quiz.correctLabel"),
-              categoryLabel: t("quiz.categoryLabel"),
-              explanationLabel: t("quiz.explanationLabel"),
-              correctState: t("quiz.correctState"),
-              incorrectState: t("quiz.incorrectState"),
-              nextQuestion: t("quiz.nextQuestion"),
-              viewReport: t("quiz.viewReport"),
-              reportEyebrow: t("report.eyebrow"),
-              reportTitle: t("report.title"),
-              reportCopyPerfect: t("report.copyPerfect", { score: "{score}" }),
-              reportCopyStrong: t("report.copyStrong", { score: "{score}" }),
-              reportCopyNice: t("report.copyNice", { score: "{score}" }),
-              reviewTitle: t("report.reviewTitle"),
-              showWrongOnly: t("report.showWrongOnly"),
-              showAll: t("report.showAll"),
-              share: t("report.share"),
-              copied: t("report.copied"),
-              retry: t("report.retry"),
+              progressLabel: quizT("session.progressLabel"),
+              questionLabel: quizT("session.questionLabel"),
+              correctLabel: quizT("session.correctLabel"),
+              categoryLabel: quizT("session.categoryLabel"),
+              explanationLabel: quizT("session.explanationLabel"),
+              correctState: quizT("session.correctState"),
+              incorrectState: quizT("session.incorrectState"),
+              nextQuestion: quizT("session.nextQuestion"),
+              viewReport: quizT("session.viewReport"),
+              reportEyebrow: quizT("report.eyebrow"),
+              reportTitle: quizT("report.title"),
+              reportCopyPerfect: quizT("report.copyPerfect", { score: "{score}" }),
+              reportCopyStrong: quizT("report.copyStrong", { score: "{score}" }),
+              reportCopyNice: quizT("report.copyNice", { score: "{score}" }),
+              reviewTitle: quizT("report.reviewTitle"),
+              showWrongOnly: quizT("report.showWrongOnly"),
+              showAll: quizT("report.showAll"),
+              share: quizT("report.share"),
+              copied: quizT("report.copied"),
+              retry: quizT("report.retry"),
             }}
           />
         </div>

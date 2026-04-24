@@ -74,6 +74,42 @@ async function getQuestionMap(ids: string[]) {
   );
 }
 
+async function getScheduledQuestionsByDate(date: string) {
+  return dailyQuestionSchedule.findMany({
+    where: {
+      showDate: toUtcDateOnly(date),
+    },
+    orderBy: {
+      sortOrder: "asc",
+    },
+  });
+}
+
+async function getPublishedFirstQuestionSchedules(options: {
+  beforeTodayOnly?: boolean;
+  limit?: number;
+  order: "asc" | "desc";
+}) {
+  const today = toUtcDateOnly(getTodayUtcDate());
+
+  return dailyQuestionSchedule.findMany({
+    where: {
+      asFirst: 1,
+      showDate: options.beforeTodayOnly
+        ? {
+            lt: today,
+          }
+        : {
+            lte: today,
+          },
+    },
+    orderBy: {
+      showDate: options.order,
+    },
+    ...(options.limit ? { take: options.limit } : {}),
+  });
+}
+
 export function getTodayUtcDate() {
   return formatUtcDate(new Date());
 }
@@ -100,15 +136,8 @@ export function isFutureTriviaDate(date: string) {
   return date > getTodayUtcDate();
 }
 
-export async function getDailyQuizByDate(date: string): Promise<DailyQuizPayload | null> {
-  const schedule = await dailyQuestionSchedule.findMany({
-    where: {
-      showDate: toUtcDateOnly(date),
-    },
-    orderBy: {
-      sortOrder: "asc",
-    },
-  });
+export async function getQuizDetailsByDate(date: string): Promise<DailyQuizPayload | null> {
+  const schedule = await getScheduledQuestionsByDate(date);
 
   if (schedule.length === 0) {
     return null;
@@ -138,26 +167,22 @@ export async function getDailyQuizByDate(date: string): Promise<DailyQuizPayload
   };
 }
 
-export async function getTodayDailyQuiz() {
-  return getDailyQuizByDate(getTodayUtcDate());
+export async function getDailyQuizByDate(date: string) {
+  return getQuizDetailsByDate(date);
 }
 
-export async function getLatestAvailableDailyQuiz(): Promise<DailyQuizPayload | null> {
-  const candidates = await dailyQuestionSchedule.findMany({
-    where: {
-      asFirst: 1,
-      showDate: {
-        lte: toUtcDateOnly(getTodayUtcDate()),
-      },
-    },
-    orderBy: {
-      showDate: "desc",
-    },
-    take: 30,
+export async function getTodayDailyQuiz() {
+  return getQuizDetailsByDate(getTodayUtcDate());
+}
+
+export async function getLatestAvailableQuizDetails(): Promise<DailyQuizPayload | null> {
+  const candidates = await getPublishedFirstQuestionSchedules({
+    order: "desc",
+    limit: 30,
   });
 
   for (const candidate of candidates) {
-    const quiz = await getDailyQuizByDate(formatUtcDate(candidate.showDate));
+    const quiz = await getQuizDetailsByDate(formatUtcDate(candidate.showDate));
     if (quiz) {
       return quiz;
     }
@@ -166,17 +191,10 @@ export async function getLatestAvailableDailyQuiz(): Promise<DailyQuizPayload | 
   return null;
 }
 
-export async function getArchiveDays(): Promise<ArchiveDayItem[]> {
-  const schedule = await dailyQuestionSchedule.findMany({
-    where: {
-      asFirst: 1,
-      showDate: {
-        lt: toUtcDateOnly(getTodayUtcDate()),
-      },
-    },
-    orderBy: {
-      showDate: "desc",
-    },
+export async function getArchiveDaySummaries(): Promise<ArchiveDayItem[]> {
+  const schedule = await getPublishedFirstQuestionSchedules({
+    beforeTodayOnly: true,
+    order: "desc",
   });
 
   if (schedule.length === 0) {
@@ -201,4 +219,20 @@ export async function getArchiveDays(): Promise<ArchiveDayItem[]> {
       };
     })
     .filter((item): item is ArchiveDayItem => item !== null);
+}
+
+export async function getPublishedQuizDates(): Promise<string[]> {
+  const schedule = await getPublishedFirstQuestionSchedules({
+    order: "asc",
+  });
+
+  return Array.from(new Set(schedule.map((item) => formatUtcDate(item.showDate))));
+}
+
+export async function getLatestAvailableDailyQuiz() {
+  return getLatestAvailableQuizDetails();
+}
+
+export async function getArchiveDays() {
+  return getArchiveDaySummaries();
 }

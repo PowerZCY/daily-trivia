@@ -1,31 +1,26 @@
 {
   "home": {
     "title": "Daily Trivia",
-    "banner": "Ship Faster | Charge Smarter | Scale Fearlessly",
+    "banner": "",
     "webTitle": "Daily Trivia: 5 Fun, Handpicked Questions for Curious Minds",
     "webDescription": "Play today's daily trivia with five handpicked questions across multiple categories, plus answers, explanations, and a full archive.",
     "keywords": "daily trivia, today's trivia, daily quiz, trivia question of the day, daily trivia questions and answers, handpicked trivia, free online trivia"
   },
   "hero": {
-    "mainTitle": "Ship a paid AI product with",
-    "mainEyesOn": "Diaomao",
-    "description": "Pricing that upgrades itself. Credits that never leak. Docs that stay in sync. Stripe flows that just work. Diaomao is the full-stack chassis trusted by makers who refuse to waste another weekend on billing infrastructure.",
-    "button": "Get Diaomao →",
-    "about": "SSR-first • Mobile-perfected • Fingerprint → Clerk seamless onboarding",
-    "heroImageAlt": "Diaomao – Modern pricing, credit dashboard and documentation system",
-    "heroImageUrl": "https://r2.d8ger.com/default.webp"
-  },
-  "trivia": {
-    "eyebrow": "Daily Trivia",
-    "title": "Daily Trivia for Curious Minds.",
+    "title": "Daily Trivia for Curious Minds",
     "description": "Five handpicked questions across multiple categories, designed to spark curiosity.",
-    "primaryCta": "Play today’s set",
-    "subtleNote": "Handpicked daily trivia, fresh every day, with answers, explanations, and a growing archive",
-    "previewEyebrow": "Today’s preview",
-    "previewQuestionLabel": "First question",
     "emptyTitle": "Today’s trivia is not ready yet.",
     "emptyDescription": "The daily set has not been scheduled for the current UTC date yet. Check back soon or browse an earlier day from the archive.",
-    "quiz": {
+    "archive": {
+      "title": "Archive",
+      "description": "Explore previous Daily Trivia quizzes, revisit handpicked trivia questions, and open the full set for any archived day.",
+      "completed": "Completed",
+      "incompleteOnly": "Hide complete days",
+      "empty": "All archived days are completed. Turn off the filter to browse the full archive again."
+    }
+  },
+  "quiz": {
+    "session": {
       "progressLabel": "Answer all five questions to unlock the report.",
       "questionLabel": "Question",
       "correctLabel": "Correct",
@@ -48,14 +43,9 @@
       "share": "Share",
       "copied": "Copied",
       "retry": "Retry"
-    },
-    "archive": {
-      "title": "Archive",
-      "description": "Explore previous Daily Trivia quizzes, revisit handpicked trivia questions, and open the full set for any archived day.",
-      "completed": "Completed",
-      "incompleteOnly": "Hide complete days",
-      "empty": "All archived days are completed. Turn off the filter to browse the full archive again."
-    },
+    }
+  },
+  "archive": {
     "detail": {
       "backToArchive": "Back to  archive",
       "previousDay": "Previous day",
@@ -233,8 +223,8 @@
     }
   },
   "seoContent": {
-    "title": "Daily trivia for",
-    "eyesOn": "curious minds",
+    "title": "Daily trivia questions for",
+    "eyesOn": "quiz fans",
     "description": "Handpicked trivia questions, fresh every day, across science, history, pop culture, geography, sports, food, psychology, and more.",
     "intro": "This is a daily trivia site built around carefully selected questions rather than random quiz filler. Every set is short, approachable, and made to spark curiosity, whether you want today's trivia, a quick trivia quiz, or archived trivia questions from an earlier day.",
     "sections": [
@@ -272,7 +262,7 @@
     "changeAction": "Yes, switch"
   },
   "footer": {
-    "company": "WindRun · Huaiin",
+    "company": "Daily Trivia",
     "copyright": "Copyright © {year} {name} All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
