@@ -8,13 +8,42 @@ CREATE SCHEMA dailyt;
 -- 第三步：把所有权给 postgres（防止任何权限问题）
 ALTER SCHEMA dailyt OWNER TO postgres;
 
--- 第四步：给常用角色全开权限（本地开发保险起见）
-GRANT ALL ON SCHEMA dailyt TO postgres;
-GRANT ALL ON SCHEMA dailyt TO anon;
-GRANT ALL ON SCHEMA dailyt TO authenticated;
-GRANT ALL ON SCHEMA dailyt TO service_role;
+REVOKE ALL ON SCHEMA dailyt FROM anon, authenticated, service_role;
+REVOKE ALL ON ALL TABLES IN SCHEMA dailyt FROM anon, authenticated, service_role;
+REVOKE ALL ON ALL SEQUENCES IN SCHEMA dailyt FROM anon, authenticated, service_role;
+REVOKE ALL ON ALL FUNCTIONS IN SCHEMA dailyt FROM anon, authenticated, service_role;
 
--- 第五步：以后在这个 schema 里建的表默认关闭 RLS（本地开发神器）
-ALTER DEFAULT PRIVILEGES IN SCHEMA dailyt REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;
-ALTER DEFAULT PRIVILEGES IN SCHEMA dailyt GRANT ALL ON TABLES TO postgres, anon, authenticated, service_role;
-ALTER DEFAULT PRIVILEGES IN SCHEMA dailyt GRANT ALL ON SEQUENCES TO postgres, anon, authenticated, service_role;
+REVOKE ALL ON SCHEMA dailyt FROM PUBLIC;
+REVOKE ALL ON ALL TABLES IN SCHEMA dailyt FROM PUBLIC;
+REVOKE ALL ON ALL SEQUENCES IN SCHEMA dailyt FROM PUBLIC;
+REVOKE ALL ON ALL FUNCTIONS IN SCHEMA dailyt FROM PUBLIC;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_roles WHERE rolname = 'dailyt_app'
+  ) THEN
+    CREATE ROLE dailyt_app
+      LOGIN
+      PASSWORD 'XXXdailyt_app';
+  END IF;
+END
+$$;
+
+GRANT CONNECT ON DATABASE postgres TO dailyt_app;
+GRANT USAGE ON SCHEMA dailyt TO dailyt_app;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA dailyt TO dailyt_app;
+GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA dailyt TO dailyt_app;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA dailyt TO dailyt_app;
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA dailyt
+  REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA dailyt
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO dailyt_app;
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA dailyt
+  GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO dailyt_app;
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA dailyt
+  GRANT EXECUTE ON FUNCTIONS TO dailyt_app;
