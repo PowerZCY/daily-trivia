@@ -223,6 +223,7 @@ export async function getArchiveDaySummaries(): Promise<ArchiveDayItem[]> {
 
 export async function getPublishedQuizDates(): Promise<string[]> {
   const schedule = await getPublishedFirstQuestionSchedules({
+    beforeTodayOnly: true,
     order: "asc",
   });
 

@@ -6,6 +6,7 @@ import { getTranslations } from "next-intl/server";
 import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib";
 import { DailyQuizClient } from "@/components/daily-quiz-client";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { appConfig } from "@/lib/appConfig";
 import { getArchiveDays, getDailyQuizByDate, isFutureTriviaDate, isValidTriviaDate } from "@/lib/trivia";
 
 type PageProps = {
@@ -32,6 +33,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: t("archiveTitle", { day: quiz.dayNumber, date }),
     description: t("archiveDescription", { date, question: firstQuestion }),
+    alternates: {
+      canonical: `${appConfig.baseUrl}${getAsNeededLocalizedUrl(locale, `/archive/${date}`)}`,
+      languages: {
+        en: `${appConfig.baseUrl}${getAsNeededLocalizedUrl("en", `/archive/${date}`)}`,
+      },
+    },
   };
 }
 

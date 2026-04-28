@@ -37,6 +37,8 @@ export const revalidate = 86400;
 
 这样 sitemap 会按 ISR 的方式缓存一天，不需要每次请求都实时查库，也不需要等下次完整 build 才更新。
 
+需要注意的是，`revalidate = 86400` 不是“每天定时自动生成一次”。生产环境中，sitemap 缓存过期后，需要下一次访问 `/sitemap.xml` 才会触发重新生成。通常情况下，过期后的第一次请求可能先拿到旧缓存，Next.js 在后台生成新版本；新版本生成成功后，后续请求才会拿到更新后的 sitemap。
+
 ### 1. 固定公开路由
 
 固定公开路由目前显式写入 sitemap：
@@ -86,7 +88,7 @@ date: 2026-04-22
 这个函数只读取 `dailyQuestionSchedule` 中满足以下条件的记录：
 
 * `asFirst = 1`
-* `showDate <= today`
+* `showDate < today`
 
 然后提取去重后的日期列表，得到 sitemap 中应包含的 archive URL：
 
@@ -131,7 +133,9 @@ getAsNeededLocalizedUrl(locale, route, localePrefixAsNeeded, defaultLocale)
 * 也不用 `force-dynamic`
 * 使用 `revalidate = 86400`
 
-这能在“自动更新”和“运行成本”之间取得比较稳妥的平衡。
+这能在“可自动更新”和“运行成本”之间取得比较稳妥的平衡。
+
+这个策略的代价是 sitemap 不是访问时强一致的：如果缓存刚过期，第一次请求仍可能拿到上一版 sitemap。如果需要保证搜索引擎每次访问都拿到最新结果，可以改用 `export const dynamic = "force-dynamic"`，但这会让每次 sitemap 请求都实时查库和扫文件，也会让数据库短暂故障直接影响 sitemap 响应。
 
 ## 结果
 
@@ -140,7 +144,7 @@ getAsNeededLocalizedUrl(locale, route, localePrefixAsNeeded, defaultLocale)
 * 能包含真实存在的 archive 日期页
 * 能覆盖 `blog` 和 `legal` 两类 MDX 页面
 * MDX 页面的 `lastModified` 来自 frontmatter `date`
-* sitemap 每 24 小时自动重新生成一次
+* sitemap 使用 24 小时 ISR 缓存，缓存过期后的下一次请求会触发重新生成
 * 不再受第三方 helper 的静态化和统一时间戳限制
 * archive URL 生成只依赖排期表，不依赖 FAQ 题目详情接口
 
