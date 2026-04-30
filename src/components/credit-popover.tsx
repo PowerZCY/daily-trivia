@@ -1,30 +1,27 @@
-import { creditService, subscriptionService, userService } from '@windrun-huaiin/backend-core/database';
-import { auth } from '@clerk/nextjs/server';
+import '@/server/prisma';
+import { creditService, subscriptionService } from '@windrun-huaiin/backend-core/database';
+import { getOptionalServerAuthUser } from '@windrun-huaiin/backend-core/auth/server';
 import { viewLocalTime } from '@windrun-huaiin/lib/utils';
-import { CreditNavButton } from '@windrun-huaiin/third-ui/main';
-import type { CreditOverviewData } from '@windrun-huaiin/third-ui/main/server';
-import { CreditOverview, buildMoneyPriceData } from '@windrun-huaiin/third-ui/main/server';
-import { moneyPriceConfig } from '@windrun-huaiin/backend-core/lib';
-import { buildInitUserContextFromEntities } from '@windrun-huaiin/backend-core/context';
+import { CreditNavButton } from '@windrun-huaiin/third-ui/main/credit';
+import type { CreditOverviewData } from '@windrun-huaiin/third-ui/main/credit/server';
+import { CreditOverview } from '@windrun-huaiin/third-ui/main/credit/server';
+import { buildMoneyPriceData } from '@windrun-huaiin/third-ui/main/money-price/server';
+import { moneyPriceConfig } from '@windrun-huaiin/backend-core/config/money-price';
+import { buildInitUserContextFromEntities } from '@windrun-huaiin/backend-core/context'
 import { getTranslations } from 'next-intl/server';
-import { getAsNeededLocalizedUrl } from '@windrun-huaiin/lib';
+import { getAsNeededLocalizedUrl } from '@windrun-huaiin/lib/utils';
+import { localePrefixAsNeeded, defaultLocale } from '@/lib/appConfig';
 
 interface CreditPopoverProps {
   locale: string;
 }
 
 export async function CreditPopover({ locale }: CreditPopoverProps) {
-  const { userId: clerkUserId } = await auth();
-
-  if (!clerkUserId) {
+  const authUser = await getOptionalServerAuthUser();
+  if (!authUser) {
     return null;
   }
-
-  const user = await userService.findByClerkUserId(clerkUserId);
-  if (!user) {
-    console.warn('User not found!');
-    return null;
-  }
+  const { user } = authUser;
 
   const enableSubscriptionUpgrade = process.env.ENABLE_STRIPE_SUBSCRIPTION_UPGRADE !== 'false';
 
@@ -89,7 +86,8 @@ export async function CreditPopover({ locale }: CreditPopoverProps) {
       : [])
   ];
 
-  const pricingPageBaseUrl = getAsNeededLocalizedUrl(locale, "/pricing");
+  // 按照项目设置来决定是否带上语言前缀
+  const pricingPageBaseUrl = getAsNeededLocalizedUrl(locale, "/pricing",  localePrefixAsNeeded,  defaultLocale);
 
   const data: CreditOverviewData = {
     totalBalance,
@@ -120,7 +118,7 @@ export async function CreditPopover({ locale }: CreditPopoverProps) {
 
   if (subscription) {
     data.subscription = {
-      planName: subscription.priceName || t('subscription.active'),
+      planName: subscription.priceName ?? '',
       periodStart: viewLocalTime(subscription.subPeriodStart),
       periodEnd: viewLocalTime(subscription.subPeriodEnd),
     };

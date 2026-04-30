@@ -1,22 +1,21 @@
-import { getMDXComponents } from '@/components/mdx-components';
 import { appConfig } from '@/lib/appConfig';
-import { SiteIcon } from '@/lib/site-config';
-import { legalSource } from '@/lib/source-legal';
+import { siteDocs } from '@/lib/site-docs';
 import { NotFoundPage } from '@windrun-huaiin/base-ui/components';
-import { createFumaPage } from '@windrun-huaiin/third-ui/fuma/server';
+import { createFumaPage } from '@windrun-huaiin/third-ui/fuma/server/page-generator';
+import { SiteIcon } from '@/lib/site-config';
 
-const sourceKey = 'legal';
+const sourceKey = 'blog';
 const { Page, generateStaticParams, generateMetadata } = createFumaPage({
   sourceKey: sourceKey,
-  mdxContentSource: legalSource,
-  getMDXComponents,
+  mdxContentSource: () => siteDocs.getContentSource('blog'),
+  getMDXComponents: siteDocs.getMDXComponents,
   mdxSourceDir: appConfig.mdxSourceDir[sourceKey],
   siteIcon: <SiteIcon />,
   FallbackPage: NotFoundPage,
-  supportedLocales: appConfig.i18n.locales as string[],
   showBreadcrumb: false,
   showTableOfContent: true,
-  showTableOfContentPopover: false
+  showTableOfContentPopover: false,
+  tocRenderMode: 'portable-clerk'
 });
 
 export default Page;

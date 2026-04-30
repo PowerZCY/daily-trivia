@@ -1,12 +1,34 @@
 {
   "i18n": {
-    "locales": ["en", "zh"],
+    "locales": ["en"],
     "defaultLocale": "en",
-    "messageRoot": "messages"
+    "messageRoot": "messages",
+    "messageGlobs": [
+      "messages/{locale}.json",
+      "messages/biz/*.{locale}.json"
+    ]
   },
   "scan": {
     "include": ["src/**/*.{tsx,ts,jsx,js}"],
-    "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/**/*.d.ts", "node_modules/**", ".claude/**", ".gemini/**", ".codex/**", ".vscode/**", ".clerk/**"]
+    "exclude": ["src/**/*.d.ts", "src/**/*.test.ts", "src/**/*.test.tsx", "node_modules/**"],
+    "includeWindrunPackages": false,
+    "whitelist": ["footer.title", "home.email", "home.banner"],
+    "namespaceWhitelist": [
+      "usage",
+      "credit",
+      "gallery",
+      "faq",
+      "moneyPrice",
+      "features",
+      "tips",
+      "seoContent",
+      "cta",
+      "languageDetection",
+      "footer",
+      "clerk",
+      "fuma",
+      "pricePlan"
+    ]
   },
   "blog": {
     "mdxDir": "src/mdx/blog",
@@ -29,6 +51,7 @@
       "@clerk/themes",
       "@fingerprintjs/fingerprintjs",
       "@hookform/resolvers",
+      "@prisma/adapter-pg",
       "@prisma/client",
       "@radix-ui/react-alert-dialog",
       "@radix-ui/react-dropdown-menu",
@@ -44,11 +67,13 @@
       "@types/react",
       "@types/react-dom",
       "@typescript-eslint/parser",
-      "@windrun-huaiin/backend-core",
-      "@windrun-huaiin/base-ui",
-      "@windrun-huaiin/dev-scripts",
+      "@windrun-huaiin/contracts",
       "@windrun-huaiin/lib",
+      "@windrun-huaiin/base-ui",
       "@windrun-huaiin/third-ui",
+      "@windrun-huaiin/backend-core",
+      "@windrun-huaiin/fumadocs-local-md",
+      "@windrun-huaiin/dev-scripts",
       "autoprefixer",
       "baseline-browser-mapping",
       "class-variance-authority",
@@ -59,9 +84,6 @@
       "eslint-plugin-unused-imports",
       "fast-glob",
       "fumadocs-core",
-      "fumadocs-docgen",
-      "fumadocs-mdx",
-      "fumadocs-typescript",
       "fumadocs-ui",
       "katex",
       "lucide-react",
@@ -97,7 +119,10 @@
     ],
     "compactLog": true
   },
+  "architectureExclude": [
+    "coverage"
+  ],
   "architectureConfig": {
-    ".": "Diaomao Project"
+    ".": "DailyTrivia项目"
   }
 }

@@ -1,21 +1,21 @@
+import type { ReactNode } from 'react';
 import { baseOptions } from '@/app/[locale]/layout.config';
 import { levelNavLinks, primaryNavLinks } from '@/app/[locale]/layout.nav';
-import { homeHeavyItems } from './layout.heavy';
 import { showBanner, localePrefixAsNeeded, defaultLocale } from '@/lib/appConfig';
-import { i18n } from '@/lib/i18n-base';
+import { siteDocs } from '@/lib/site-docs';
+import { SiteDocsLayout } from '@windrun-huaiin/third-ui/fuma/base/site-docs-layout';
+import { SiteHomeLayout, type SiteHomeLayoutConfig } from '@windrun-huaiin/third-ui/fuma/base/site-home-layout';
 import { fingerprintConfig } from '@windrun-huaiin/backend-core/config/fingerprint';
 import { FingerprintProvider } from '@windrun-huaiin/third-ui/fingerprint';
-import { SiteHomeLayout, type SiteHomeLayoutConfig } from '@windrun-huaiin/third-ui/fuma/base/site-home-layout';
-import type { ReactNode } from 'react';
+import { appConfig } from '@/lib/appConfig';
 
-async function homeOptions(locale: string): Promise<SiteHomeLayoutConfig> {
+async function contentOptions(locale: string): Promise<SiteHomeLayoutConfig> {
   return {
-      ...(await baseOptions(locale)),
-      links: [
-        ...(await primaryNavLinks(locale)),
-        ...(await levelNavLinks(locale)),
-        ...(await homeHeavyItems(locale)),
-      ]
+    ...(await baseOptions(locale)),
+    links: [
+      ...(await primaryNavLinks(locale)),
+      ...(await levelNavLinks(locale)),
+    ],
   };
 }
 
@@ -27,10 +27,11 @@ export default async function Layout({
   children: ReactNode;
 }) {
   const { locale } = await params;
-  const customeOptions = await homeOptions(locale);
+  const blogSource = await siteDocs.getContentSource('blog');
+  const contentLayoutOptions = await contentOptions(locale);
   const homeLayoutOptions: SiteHomeLayoutConfig = {
-    ...customeOptions,
-    i18n,
+    ...contentLayoutOptions,
+    githubUrl: appConfig.github,
     searchToggle: {
       enabled: false,
     },
@@ -49,6 +50,7 @@ export default async function Layout({
           localePrefixAsNeeded,
           defaultLocale,
           showBanner,
+          showFooter: false,
           floatingNav: true,
           actionOrders: {
             desktop: ['search', 'theme', 'github', 'i18n', 'secondary'],
@@ -57,7 +59,15 @@ export default async function Layout({
           },
         }}
       >
-        {children}
+        <SiteDocsLayout
+          config={{
+            tree: blogSource.getPageTree(locale),
+            sidebar: { enabled: false },
+            searchToggle: { enabled: false },
+          }}
+        >
+          {children}
+        </SiteDocsLayout>
       </SiteHomeLayout>
     </FingerprintProvider>
   );

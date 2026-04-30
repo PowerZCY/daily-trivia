@@ -1,13 +1,13 @@
 import "server-only";
 
-import { prisma as rawPrisma } from "@windrun-huaiin/backend-core/prisma";
-import { createAnswersUniverseClientFromEnv } from "@windrun-huaiin/faq-sdk";
+import { prisma as rawPrisma } from "@/server/prisma";
+import { AnswersUniverseSdkError, createAnswersUniverseClientFromEnv } from "@windrun-huaiin/faq-sdk";
 import type { OuterQuestionBaseItemDto } from "@windrun-huaiin/faq-sdk";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@app-prisma";
 
 const DAY_ONE = "2026-04-01";
 
-const faqClient = createAnswersUniverseClientFromEnv();
+let faqClient: ReturnType<typeof createAnswersUniverseClientFromEnv> | null = null;
 const dailyQuestionSchedule = (rawPrisma as typeof rawPrisma & {
   dailyQuestionSchedule: Prisma.DailyQuestionScheduleDelegate;
 }).dailyQuestionSchedule;
@@ -65,10 +65,44 @@ function normalizeQuestion(
   };
 }
 
+function getFaqClient() {
+  faqClient ??= createAnswersUniverseClientFromEnv();
+  return faqClient;
+}
+
+function isRecoverableQuestionProviderError(error: unknown) {
+  if (!(error instanceof AnswersUniverseSdkError)) {
+    return false;
+  }
+
+  return (
+    error.code === "REQUEST_FAILED" ||
+    error.code === "REQUEST_TIMEOUT" ||
+    (error.code === "HTTP_ERROR" && typeof error.status === "number" && error.status >= 500)
+  );
+}
+
 async function getQuestionMap(ids: string[]) {
-  const result = await faqClient.v1.questionsBase.getByIds(ids);
+  if (ids.length === 0) {
+    return new Map<string, OuterQuestionBaseItemDto>();
+  }
+
+  let result: Awaited<ReturnType<ReturnType<typeof getFaqClient>["v1"]["questionsBase"]["getByIds"]>>;
+  try {
+    result = await getFaqClient().v1.questionsBase.getByIds(ids);
+  } catch (error) {
+    if (isRecoverableQuestionProviderError(error)) {
+      console.warn("[trivia] Question provider unavailable; rendering without question details.", error);
+      return new Map<string, OuterQuestionBaseItemDto>();
+    }
+
+    throw error;
+  }
+
+  const items = Array.isArray(result?.items) ? result.items : [];
+
   return new Map(
-    result.items
+    items
       .filter((item) => item?.id != null)
       .map((item) => [getQuestionId(item), item]),
   );

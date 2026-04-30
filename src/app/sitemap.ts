@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { MetadataRoute } from "next";
-import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib";
+import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib/utils";
 import { appConfig, defaultLocale, localePrefixAsNeeded } from "@/lib/appConfig";
 import { getPublishedQuizDates, getTodayUtcDate, isValidTriviaDate } from "@/lib/trivia";
 

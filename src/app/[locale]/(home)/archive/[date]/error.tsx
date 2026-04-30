@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { RotateCw } from "lucide-react";
-import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib";
+import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib/utils";
 
 type ErrorPageProps = {
   error: Error & { digest?: string };

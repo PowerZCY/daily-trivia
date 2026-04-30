@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib";
+import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib/utils";
 import { DailyQuizClient } from "@/components/daily-quiz-client";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { appConfig } from "@/lib/appConfig";

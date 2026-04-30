@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib";
+import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib/utils";
 import { DailyQuizArchive } from "@/components/daily-quiz-archive";
 import { DailyQuizClient } from "@/components/daily-quiz-client";
 import { getArchiveDays, getLatestAvailableDailyQuiz } from "@/lib/trivia";
