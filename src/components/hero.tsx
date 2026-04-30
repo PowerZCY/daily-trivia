@@ -2,14 +2,14 @@ import { getTranslations } from "next-intl/server";
 import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib/utils";
 import { DailyQuizArchive } from "@/components/daily-quiz-archive";
 import { DailyQuizClient } from "@/components/daily-quiz-client";
-import { getArchiveDays, getLatestAvailableDailyQuiz } from "@/lib/trivia";
+import { getHomeTriviaData } from "@/lib/home-trivia";
 
 export async function Hero({ locale }: { locale: string }) {
   const [t, quizT] = await Promise.all([
     getTranslations({ locale, namespace: "hero" }),
     getTranslations({ locale, namespace: "quiz" }),
   ]);
-  const [quiz, archiveDays] = await Promise.all([getLatestAvailableDailyQuiz(), getArchiveDays()]);
+  const { latestQuiz, archiveDays } = await getHomeTriviaData();
   const basePath = getAsNeededLocalizedUrl(locale, "");
 
   return (
@@ -23,10 +23,10 @@ export async function Hero({ locale }: { locale: string }) {
         </p>
       </div>
 
-      {quiz ? (
+      {latestQuiz ? (
         <div id="today-quiz">
           <DailyQuizClient
-            quiz={quiz}
+            quiz={latestQuiz}
             copy={{
               progressLabel: quizT("session.progressLabel"),
               questionLabel: quizT("session.questionLabel"),
