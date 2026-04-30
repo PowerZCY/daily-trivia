@@ -7,7 +7,13 @@ import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib";
 import { DailyQuizClient } from "@/components/daily-quiz-client";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { appConfig } from "@/lib/appConfig";
-import { getArchiveDays, getDailyQuizByDate, isFutureTriviaDate, isValidTriviaDate } from "@/lib/trivia";
+import {
+  getArchiveDays,
+  getDailyQuizByDate,
+  hasDailyQuizScheduleByDate,
+  isFutureTriviaDate,
+  isValidTriviaDate,
+} from "@/lib/trivia";
 
 type PageProps = {
   params: Promise<{
@@ -22,9 +28,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {};
   }
 
+  const hasSchedule = await hasDailyQuizScheduleByDate(date);
+  if (!hasSchedule) {
+    return {};
+  }
+
   const quiz = await getDailyQuizByDate(date);
   if (!quiz) {
-    return {};
+    throw new Error(`Published archive quiz is unavailable while generating metadata: ${date}`);
   }
 
   const t = await getTranslations({ locale, namespace: "archive.metadata" });
@@ -48,6 +59,11 @@ export default async function ArchiveQuizPage({ params }: PageProps) {
     notFound();
   }
 
+  const hasSchedule = await hasDailyQuizScheduleByDate(date);
+  if (!hasSchedule) {
+    notFound();
+  }
+
   const [quiz, archiveDays, t, quizT] = await Promise.all([
     getDailyQuizByDate(date),
     getArchiveDays(),
@@ -56,7 +72,7 @@ export default async function ArchiveQuizPage({ params }: PageProps) {
   ]);
 
   if (!quiz) {
-    notFound();
+    throw new Error(`Published archive quiz is unavailable: ${date}`);
   }
 
   const homeHref = getAsNeededLocalizedUrl(locale, "/");

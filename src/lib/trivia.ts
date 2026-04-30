@@ -85,6 +85,16 @@ async function getScheduledQuestionsByDate(date: string) {
   });
 }
 
+export async function hasDailyQuizScheduleByDate(date: string) {
+  const count = await dailyQuestionSchedule.count({
+    where: {
+      showDate: toUtcDateOnly(date),
+    },
+  });
+
+  return count > 0;
+}
+
 async function getPublishedFirstQuestionSchedules(options: {
   beforeTodayOnly?: boolean;
   limit?: number;
