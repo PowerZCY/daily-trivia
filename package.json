@@ -45,7 +45,7 @@
     "@windrun-huaiin/contracts": "29.0.0",
     "@windrun-huaiin/fumadocs-local-md": "29.0.0",
     "@windrun-huaiin/lib": "29.0.0",
-    "@windrun-huaiin/third-ui": "29.0.3",
+    "@windrun-huaiin/third-ui": "29.0.4",
     "@windrun-huaiin/faq-contracts": "^11.1.0",
     "@windrun-huaiin/faq-sdk": "^11.1.2",
     "canvas-confetti": "^1.9.4",

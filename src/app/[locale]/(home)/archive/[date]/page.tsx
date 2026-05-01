@@ -9,7 +9,7 @@ import { ScrollToTop } from "@/components/scroll-to-top";
 import { appConfig } from "@/lib/appConfig";
 import {
   getArchiveDays,
-  getDailyQuizByDate,
+  getCachedDailyQuizByDate,
   hasDailyQuizScheduleByDate,
   isFutureTriviaDate,
   isValidTriviaDate,
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {};
   }
 
-  const quiz = await getDailyQuizByDate(date);
+  const quiz = await getCachedDailyQuizByDate(date);
   if (!quiz) {
     throw new Error(`Published archive quiz is unavailable while generating metadata: ${date}`);
   }
@@ -65,7 +65,7 @@ export default async function ArchiveQuizPage({ params }: PageProps) {
   }
 
   const [quiz, archiveDays, t, quizT] = await Promise.all([
-    getDailyQuizByDate(date),
+    getCachedDailyQuizByDate(date),
     getArchiveDays(),
     getTranslations({ locale, namespace: "archive" }),
     getTranslations({ locale, namespace: "quiz" }),

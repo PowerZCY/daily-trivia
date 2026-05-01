@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { prisma as rawPrisma } from "@/server/prisma";
 import { AnswersUniverseSdkError, createAnswersUniverseClientFromEnv } from "@windrun-huaiin/faq-sdk";
 import type { OuterQuestionBaseItemDto } from "@windrun-huaiin/faq-sdk";
@@ -214,6 +215,8 @@ export async function getQuizDetailsByDate(date: string): Promise<DailyQuizPaylo
 export async function getDailyQuizByDate(date: string) {
   return getQuizDetailsByDate(date);
 }
+
+export const getCachedDailyQuizByDate = cache(getDailyQuizByDate);
 
 export async function getTodayDailyQuiz() {
   return getQuizDetailsByDate(getTodayUtcDate());
