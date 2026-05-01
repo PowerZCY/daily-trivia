@@ -47,7 +47,7 @@
     "@windrun-huaiin/lib": "29.0.0",
     "@windrun-huaiin/third-ui": "29.0.3",
     "@windrun-huaiin/faq-contracts": "^11.1.0",
-    "@windrun-huaiin/faq-sdk": "^11.1.1",
+    "@windrun-huaiin/faq-sdk": "^11.1.2",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "lucide-react": "^0.577.0",
