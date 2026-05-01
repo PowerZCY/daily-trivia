@@ -194,11 +194,3 @@ CREATE TABLE IF NOT EXISTS dailyt.daily_question_schedule (
 CREATE INDEX IF NOT EXISTS idx_daily_question_schedule_show_date ON dailyt.daily_question_schedule (show_date);
 CREATE INDEX IF NOT EXISTS idx_daily_question_schedule_question_id ON dailyt.daily_question_schedule (question_id);
 CREATE INDEX IF NOT EXISTS idx_daily_question_schedule_question_uuid ON dailyt.daily_question_schedule (question_uuid);
-
-INSERT INTO dailyt.daily_question_schedule (show_date, question_id, question_uuid, as_first, sort_order)
-VALUES
-    ('2026-04-19', 10444, '7f7fbe88-63f2-4dcf-8599-95d0446b18e8', 1, 1),
-    ('2026-04-19', 10495, '298de08a-e311-48c1-8488-0357f38cf089', 0, 2),
-    ('2026-04-19', 10494, '881829aa-2cb6-489c-a448-9eca55d17755', 0, 3),
-    ('2026-04-19', 10499, '4b688a3f-4dcd-4028-8b58-bd8df1114a6d', 0, 4),
-    ('2026-04-19', 10451, '12a763ca-cf2c-429f-82cf-f3f398202500', 0, 5);

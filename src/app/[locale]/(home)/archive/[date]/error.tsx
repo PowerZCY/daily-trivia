@@ -22,7 +22,7 @@ export default function ArchiveQuizError({ reset }: ErrorPageProps) {
   const homeArchiveHref = `${homeHref === "/" ? "/" : homeHref}#archive-${date}`;
 
   return (
-    <main className="mx-auto flex min-h-[60vh] w-full max-w-3xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
+    <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
       <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-[0_16px_48px_rgba(15,23,42,0.08)] sm:p-8">
         <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
           Loading issue

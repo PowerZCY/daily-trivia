@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import confetti from "canvas-confetti";
+import { GradientButton } from "@windrun-huaiin/third-ui/main/buttons";
 import { Check, ChevronRight, RotateCcw, Share2, X } from "lucide-react";
 import type { DailyQuizPayload } from "@/lib/trivia";
 
@@ -579,15 +580,16 @@ export function DailyQuizClient({ quiz, copy }: Props) {
                           ? copy.correctState
                           : `${copy.incorrectState} ${currentQuestion.correctAnswer}`}
                       </div>
-                      <button
-                        type="button"
+                      <GradientButton
+                        title={currentIndex === totalQuestions - 1 ? copy.viewReport : copy.nextQuestion}
+                        icon={<ChevronRight />}
+                        iconForcePosition="right"
+                        variant="soft"
                         onClick={goNext}
                         disabled={isFinishingQuiz}
-                        className="inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-slate-900 bg-slate-950 px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(15,23,42,0.18)] transition hover:-translate-y-0.5 hover:bg-slate-800"
-                      >
-                        <span>{currentIndex === totalQuestions - 1 ? copy.viewReport : copy.nextQuestion}</span>
-                        <ChevronRight className="h-4 w-4" />
-                      </button>
+                        preventDoubleClick={false}
+                        className="!h-[38px] shrink-0 px-4 text-sm"
+                      />
                     </div>
                     {currentQuestion.explanation ? (
                       <div className="mt-1 text-[15px] leading-6 text-slate-700 sm:mt-2 sm:text-[16px] sm:leading-7">

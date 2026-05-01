@@ -86,7 +86,7 @@ export default async function ArchiveQuizPage({ params }: PageProps) {
     currentIndex >= 0 && currentIndex < archiveDays.length - 1 ? archiveDays[currentIndex + 1] : null;
 
   return (
-    <section className="mx-auto mt-8 flex w-full max-w-6xl flex-col gap-8 px-4 py-6 sm:mt-10 sm:px-6 lg:px-8">
+    <main className="mx-auto mt-8 flex min-h-screen w-full max-w-6xl flex-col gap-8 px-4 py-6 sm:mt-10 sm:px-6 lg:px-8">
       <ScrollToTop />
       <div>
         <Link
@@ -150,6 +150,6 @@ export default async function ArchiveQuizPage({ params }: PageProps) {
           </Link>
         ) : null}
       </section>
-    </section>
+    </main>
   );
 }

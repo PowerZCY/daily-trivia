@@ -15,8 +15,8 @@ importers:
         specifier: ^2.0.13
         version: 2.0.13
       '@windrun-huaiin/backend-core':
-        specifier: 29.0.2
-        version: 29.0.2(3114c221f3a5ca4a8994c42f1a1d903e)
+        specifier: 29.0.3
+        version: 29.0.3(3114c221f3a5ca4a8994c42f1a1d903e)
       '@windrun-huaiin/base-ui':
         specifier: 29.0.1
         version: 29.0.1(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(clsx@2.1.1)(next-intl@4.8.3(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(next-themes@0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwind-merge@3.5.0)(tailwindcss@4.2.2)
@@ -27,8 +27,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       '@windrun-huaiin/faq-sdk':
-        specifier: ^11.1.0
-        version: 11.1.0
+        specifier: ^11.1.1
+        version: 11.1.1
       '@windrun-huaiin/fumadocs-local-md':
         specifier: 29.0.0
         version: 29.0.0(@types/estree-jsx@1.0.5)(@types/estree@1.0.8)(@types/hast@3.0.4)(@types/mdx@2.0.13)(@types/react@19.2.14)(@types/unist@3.0.3)(fumadocs-core@16.8.2(@mdx-js/mdx@3.1.1)(@types/estree-jsx@1.0.5)(@types/hast@3.0.4)(@types/mdast@4.0.4)(@types/react@19.2.14)(lucide-react@0.577.0(react@19.2.4))(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.3.6))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -1932,8 +1932,8 @@ packages:
   '@upstash/redis@1.37.0':
     resolution: {integrity: sha512-LqOJ3+XWPLSZ2rGSed5DYG3ixybxb8EhZu3yQqF7MdZX1wLBG/FRcI6xcUZXHy/SS7mmXWyadrud0HJHkOc+uw==}
 
-  '@windrun-huaiin/backend-core@29.0.2':
-    resolution: {integrity: sha512-6036KgTpyUrSp3ZD2PDp5x2cSCMAjuf5Vrb3XXjKyh/N01wVfRk0Sgy+P4VjS7n+xSdGyg2aWJa6hCzFaAGkdQ==}
+  '@windrun-huaiin/backend-core@29.0.3':
+    resolution: {integrity: sha512-wrsV5eGi688bxKY1wZVC1yPuvYnTeI+tTXD6KYahBNE9rw4r6vbd1FtUExpSiqC/KqCWLy8nrJ84pyIUgsumKA==}
     peerDependencies:
       '@clerk/nextjs': ^7.0.5
       '@prisma/client': ^7.8.0
@@ -1966,8 +1966,8 @@ packages:
   '@windrun-huaiin/faq-contracts@11.1.0':
     resolution: {integrity: sha512-Rvb4mbp0+oqn3TOO20Rn5LJRSplD9qhVyxpOKUNGUdAoN40VyTYV4J9XiB85wlxaAPSMh+YwHcFzhgisJJNb2A==}
 
-  '@windrun-huaiin/faq-sdk@11.1.0':
-    resolution: {integrity: sha512-fSdM7fiRxH4i5U9WGsGR2FM7k2ytmE00xEDL8NEEmAzk8DMQMjsFxBtA0WcUH0e6o0lFpqBwLFCwTxLM8IXXbg==}
+  '@windrun-huaiin/faq-sdk@11.1.1':
+    resolution: {integrity: sha512-c5tHkZ376jPAqgl4+ObtVBFu/xf8Kq8C3WlvB0zcxJBGk4ZPi5DCHWQGURpN8NcwtZj76H4zMGcYlGEBXkQ4NQ==}
 
   '@windrun-huaiin/fumadocs-local-md@29.0.0':
     resolution: {integrity: sha512-zVEWFdW+EbCT7ULPLambsXPnFZ6CXXztsYukKFYfXTSp4l5SHdP+gJe2P0FSpi0e0mETbd89gBbA+rRN7+knDQ==}
@@ -6655,7 +6655,7 @@ snapshots:
     dependencies:
       uncrypto: 0.1.3
 
-  '@windrun-huaiin/backend-core@29.0.2(3114c221f3a5ca4a8994c42f1a1d903e)':
+  '@windrun-huaiin/backend-core@29.0.3(3114c221f3a5ca4a8994c42f1a1d903e)':
     dependencies:
       '@clerk/nextjs': 7.0.7(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@prisma/client': 7.8.0(prisma@7.8.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3)
@@ -6743,7 +6743,7 @@ snapshots:
 
   '@windrun-huaiin/faq-contracts@11.1.0': {}
 
-  '@windrun-huaiin/faq-sdk@11.1.0':
+  '@windrun-huaiin/faq-sdk@11.1.1':
     dependencies:
       '@windrun-huaiin/faq-contracts': 11.1.0
 
