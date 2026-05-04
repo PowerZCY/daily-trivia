@@ -1,10 +1,10 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib/utils";
 import { DailyQuizClient } from "@/components/daily-quiz-client";
+import { NavigationFeedbackLink } from "@/components/navigation-feedback-link";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { appConfig } from "@/lib/appConfig";
 import {
@@ -89,14 +89,15 @@ export default async function ArchiveQuizPage({ params }: PageProps) {
     <main className="mx-auto mt-8 flex min-h-screen w-full max-w-6xl flex-col gap-8 px-4 py-6 sm:mt-10 sm:px-6 lg:px-8">
       <ScrollToTop />
       <div>
-        <Link
+        <NavigationFeedbackLink
           href={homeArchiveHref}
           scroll
           className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 shadow-[0_10px_30px_rgba(15,23,42,0.06)] transition hover:border-slate-300 hover:bg-slate-50"
+          activeClassName="border-amber-400 text-slate-950 ring-1 ring-amber-300/70 animate-[navigation-feedback-pulse_0.8s_ease-in-out_infinite]"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>{t("detail.backToArchive")}</span>
-        </Link>
+        </NavigationFeedbackLink>
       </div>
 
       <DailyQuizClient
@@ -127,27 +128,29 @@ export default async function ArchiveQuizPage({ params }: PageProps) {
 
       <section className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200/80 pt-2">
         {olderDay ? (
-          <Link
+          <NavigationFeedbackLink
             href={`${normalizedBasePath}/archive/${olderDay.date}`}
             scroll
             className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-[0_10px_30px_rgba(15,23,42,0.06)] transition hover:border-slate-300 hover:bg-slate-50"
+            activeClassName="border-amber-400 text-slate-950 ring-1 ring-amber-300/70 animate-[navigation-feedback-pulse_0.8s_ease-in-out_infinite]"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>{t("detail.previousDayShort", { day: olderDay.dayNumber })}</span>
-          </Link>
+          </NavigationFeedbackLink>
         ) : (
           <span className="text-sm text-slate-400">{t("detail.noPreviousDay")}</span>
         )}
 
         {newerDay ? (
-          <Link
+          <NavigationFeedbackLink
             href={`${normalizedBasePath}/archive/${newerDay.date}`}
             scroll
             className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-[0_10px_30px_rgba(15,23,42,0.06)] transition hover:border-slate-300 hover:bg-slate-50"
+            activeClassName="border-amber-400 text-slate-950 ring-1 ring-amber-300/70 animate-[navigation-feedback-pulse_0.8s_ease-in-out_infinite]"
           >
             <span>{t("detail.nextDayShort", { day: newerDay.dayNumber })}</span>
             <ArrowRight className="h-4 w-4" />
-          </Link>
+          </NavigationFeedbackLink>
         ) : null}
       </section>
     </main>
