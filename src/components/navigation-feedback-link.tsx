@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import type { ComponentProps, MouseEvent } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@windrun-huaiin/lib/utils";
 
 type NavigationFeedbackLinkProps = ComponentProps<typeof Link> & {
   activeClassName?: string;
+  feedbackDurationMs?: number;
 };
 
 function shouldShowFeedback(event: MouseEvent<HTMLAnchorElement>) {
@@ -23,10 +24,20 @@ function shouldShowFeedback(event: MouseEvent<HTMLAnchorElement>) {
 export function NavigationFeedbackLink({
   activeClassName,
   className,
+  feedbackDurationMs = 800,
   onClick,
   ...props
 }: NavigationFeedbackLinkProps) {
   const [isActive, setIsActive] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <Link
@@ -36,7 +47,14 @@ export function NavigationFeedbackLink({
       onClick={(event) => {
         onClick?.(event);
         if (shouldShowFeedback(event)) {
+          if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+          }
           setIsActive(true);
+          timeoutRef.current = setTimeout(() => {
+            setIsActive(false);
+            timeoutRef.current = null;
+          }, feedbackDurationMs);
         }
       }}
     />

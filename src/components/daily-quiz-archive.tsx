@@ -118,7 +118,7 @@ export function DailyQuizArchive({ archiveDays, basePath, copy }: Props) {
                 scroll
                 onClick={() => handleArchiveClick(item.date, item.dayNumber)}
                 className="group scroll-mt-24 rounded-[1.75rem] border border-white/45 bg-[linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.14))] p-4 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-md transition hover:-translate-y-0.5 hover:border-white/70 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.34),rgba(255,255,255,0.2))] sm:p-5 sm:scroll-mt-28"
-                activeClassName="border-amber-400 ring-1 ring-amber-300/70 animate-[navigation-feedback-pulse_0.8s_ease-in-out_infinite]"
+                activeClassName="border-amber-400 ring-1 ring-amber-300/70 animate-[navigation-feedback-pulse_0.8s_ease-in-out_1]"
               >
                 <div className="space-y-3">
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">

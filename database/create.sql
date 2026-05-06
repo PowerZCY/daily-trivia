@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS dailyt.apilog (
 CREATE TABLE IF NOT EXISTS dailyt.daily_question_schedule (
     id            BIGSERIAL PRIMARY KEY,
     show_date     DATE         NOT NULL,
+    question      TEXT         NOT NULL,
     question_id   BIGINT       NOT NULL,
     question_uuid UUID         NOT NULL,
     as_first      INTEGER      NOT NULL DEFAULT 0,
@@ -194,3 +195,15 @@ CREATE TABLE IF NOT EXISTS dailyt.daily_question_schedule (
 CREATE INDEX IF NOT EXISTS idx_daily_question_schedule_show_date ON dailyt.daily_question_schedule (show_date);
 CREATE INDEX IF NOT EXISTS idx_daily_question_schedule_question_id ON dailyt.daily_question_schedule (question_id);
 CREATE INDEX IF NOT EXISTS idx_daily_question_schedule_question_uuid ON dailyt.daily_question_schedule (question_uuid);
+
+
+
+-- 重建表后必须重新执行一次显式授权。
+-- 原因：
+-- 1. DROP / CREATE 后，新表是全新的数据库对象，不会继承旧表上的 GRANT。
+-- 2. 运维可能使用不同高权限账号执行建表，无法依赖某个固定 owner 的 default privileges。
+-- 因此这里统一在建表 SQL 末尾补一遍授权，保证应用账号始终可访问最新对象。
+GRANT USAGE ON SCHEMA dailyt TO dailyt_app;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA dailyt TO dailyt_app;
+GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA dailyt TO dailyt_app;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA dailyt TO dailyt_app;

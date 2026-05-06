@@ -37,6 +37,12 @@ export type ArchiveDayItem = {
   firstQuestion: string;
 };
 
+export type ArchiveMetadataItem = {
+  date: string;
+  dayNumber: number;
+  firstQuestion: string;
+};
+
 function formatUtcDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
@@ -116,6 +122,22 @@ async function getScheduledQuestionsByDate(date: string) {
     },
     orderBy: {
       sortOrder: "asc",
+    },
+  });
+}
+
+async function getFirstScheduledQuestionByDate(date: string) {
+  return dailyQuestionSchedule.findFirst({
+    where: {
+      showDate: toUtcDateOnly(date),
+      asFirst: 1,
+    },
+    orderBy: {
+      sortOrder: "asc",
+    },
+    select: {
+      showDate: true,
+      question: true,
     },
   });
 }
@@ -218,6 +240,22 @@ export async function getDailyQuizByDate(date: string) {
 
 export const getCachedDailyQuizByDate = cache(getDailyQuizByDate);
 
+export async function getArchiveMetadataByDate(date: string): Promise<ArchiveMetadataItem | null> {
+  const firstSchedule = await getFirstScheduledQuestionByDate(date);
+
+  if (!firstSchedule?.question.trim()) {
+    return null;
+  }
+
+  return {
+    date,
+    dayNumber: getDayNumberFromDate(date),
+    firstQuestion: firstSchedule.question,
+  };
+}
+
+export const getCachedArchiveMetadataByDate = cache(getArchiveMetadataByDate);
+
 export async function getTodayDailyQuiz() {
   return getQuizDetailsByDate(getTodayUtcDate());
 }
@@ -248,13 +286,9 @@ export async function getArchiveDaySummaries(): Promise<ArchiveDayItem[]> {
     return [];
   }
 
-  const ids = schedule.map((item) => item.questionId.toString());
-  const questionMap = await getQuestionMap(ids);
-
   return schedule
     .map((item) => {
-      const question = questionMap.get(item.questionId.toString());
-      if (!question?.question) {
+      if (!item.question?.trim()) {
         return null;
       }
 
@@ -262,7 +296,7 @@ export async function getArchiveDaySummaries(): Promise<ArchiveDayItem[]> {
       return {
         date,
         dayNumber: getDayNumberFromDate(date),
-        firstQuestion: question.question,
+        firstQuestion: item.question,
       };
     })
     .filter((item): item is ArchiveDayItem => item !== null);
