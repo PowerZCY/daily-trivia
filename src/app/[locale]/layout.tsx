@@ -13,7 +13,6 @@ import React from 'react';
 
 export const dynamic = 'force-dynamic'
 
-// 网站元数据
 export async function generateMetadata({
   params: paramsPromise
 }: {
@@ -31,12 +30,12 @@ export async function generateMetadata({
 
 export default async function RootLayout({
   children,
-  params: paramsPromise  // 重命名参数
+  params: paramsPromise
 }: {
   children: React.ReactNode
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await paramsPromise;  // 使用新名称
+  const { locale } = await paramsPromise;
   setRequestLocale(locale);
   const messages = await getMessages();
   const fumaTranslations = await getFumaTranslations(locale);
