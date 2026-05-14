@@ -2,7 +2,7 @@
   "name": "daily-trivia",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@10.33.2",
+  "packageManager": "pnpm@11.1.2",
   "type": "module",
   "keywords": [
     "dailytrivia",
@@ -18,7 +18,7 @@
     "build:prod": "turbo run task:build:prod",
     "task:dev": "prisma generate && next dev",
     "task:md:build": "pnpm exec local-md build",
-    "task:build": "pnpm generate-blog-index && prisma generate && next build",
+    "task:build": "pnpm exec local-md build && pnpm generate-blog-index && prisma generate && next build",
     "task:build:dev": "pnpm generate-blog-index && prisma generate && next build",
     "task:build:prod": "prisma generate && next build",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
