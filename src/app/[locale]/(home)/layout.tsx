@@ -2,7 +2,6 @@ import { baseOptions } from '@/app/[locale]/layout.config';
 import { levelNavLinks, primaryNavLinks } from '@/app/[locale]/layout.nav';
 import { homeHeavyItems } from './layout.heavy';
 import { showBanner, localePrefixAsNeeded, defaultLocale } from '@/lib/appConfig';
-import { i18n } from '@/lib/i18n-base';
 import { fingerprintConfig } from '@windrun-huaiin/backend-core/config/fingerprint';
 import { FingerprintProvider } from '@windrun-huaiin/third-ui/fingerprint';
 import { SiteHomeLayout, type SiteHomeLayoutConfig } from '@windrun-huaiin/third-ui/fuma/base/site-home-layout';
@@ -30,12 +29,11 @@ export default async function Layout({
   const customeOptions = await homeOptions(locale);
   const homeLayoutOptions: SiteHomeLayoutConfig = {
     ...customeOptions,
-    i18n,
     searchToggle: {
       enabled: false,
     },
     themeSwitch: {
-      enabled: true,
+      enabled: false,
       mode: 'light-dark-system',
     },
   };

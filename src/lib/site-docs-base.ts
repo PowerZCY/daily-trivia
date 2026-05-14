@@ -1,4 +1,4 @@
-import { getGlobalIcon, globalLucideIcons } from '@windrun-huaiin/base-ui/components/server';
+import { getGlobalIcon, globalLucideIcons } from '@windrun-huaiin/base-ui/components/shared';
 import { createConfiguredLocalMdSourceFactory } from '@windrun-huaiin/fumadocs-local-md/server/source';
 import {
   createFumaDocsBaseCompilerOptions,

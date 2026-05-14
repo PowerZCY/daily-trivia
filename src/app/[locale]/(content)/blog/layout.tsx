@@ -7,7 +7,6 @@ import { SiteDocsLayout } from '@windrun-huaiin/third-ui/fuma/base/site-docs-lay
 import { SiteHomeLayout, type SiteHomeLayoutConfig } from '@windrun-huaiin/third-ui/fuma/base/site-home-layout';
 import { fingerprintConfig } from '@windrun-huaiin/backend-core/config/fingerprint';
 import { FingerprintProvider } from '@windrun-huaiin/third-ui/fingerprint';
-import { appConfig } from '@/lib/appConfig';
 
 async function contentOptions(locale: string): Promise<SiteHomeLayoutConfig> {
   return {
@@ -31,12 +30,11 @@ export default async function Layout({
   const contentLayoutOptions = await contentOptions(locale);
   const homeLayoutOptions: SiteHomeLayoutConfig = {
     ...contentLayoutOptions,
-    githubUrl: appConfig.github,
     searchToggle: {
       enabled: false,
     },
     themeSwitch: {
-      enabled: true,
+      enabled: false,
       mode: 'light-dark-system',
     },
   };
