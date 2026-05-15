@@ -17,7 +17,7 @@ export const { isSupportedLocale, getValidLocale, generatedLocales } = createI18
 export const { localePrefixAsNeeded, defaultLocale } = appConfig.i18n;
 
 // export shortcuts
-export const { iconColor, watermark, showBanner, clerkPageBanner, clerkAuthInModal, placeHolderImage } = appConfig.shortcuts;
+export const { iconColor, themeMode, watermark, showBanner, clerkPageBanner, clerkAuthInModal, placeHolderImage } = appConfig.shortcuts;
 export const github = appConfig.github;
 
 export const { freeAmount, freeRegisterAmount, freeExpiredDays, oneTimeExpiredDays } = appConfig.creditsConfig;

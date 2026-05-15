@@ -31,10 +31,6 @@ export default async function RootLayout({
     searchToggle: {
       enabled: false,
     },
-    themeSwitch: {
-      enabled: true,
-      mode: 'light-dark-system',
-    },
   };
   return (
     <FingerprintProvider config={fingerprintConfig}>
