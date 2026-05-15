@@ -13,10 +13,12 @@
 原来的 `src/app/sitemap.ts` 只做了一层转发：
 
 ```ts
+import { resolveMdxSourceDir } from "@/lib/mdx-source";
+
 export default createSitemapHandler(
   appConfig.baseUrl,
   appConfig.i18n.locales as string[],
-  appConfig.mdxSourceDir.blog
+  resolveMdxSourceDir('blog'),
 );
 ```
 

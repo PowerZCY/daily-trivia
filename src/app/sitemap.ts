@@ -4,6 +4,7 @@ import type { MetadataRoute } from "next";
 import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib/utils";
 import { appConfig, defaultLocale, localePrefixAsNeeded } from "@/lib/appConfig";
 import { getPublishedQuizDates, getTodayUtcDate, isValidTriviaDate } from "@/lib/trivia";
+import { resolveMdxSourceDir } from "@/lib/mdx-source";
 
 export const revalidate = 86_400;
 
@@ -94,14 +95,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const blogRoutes = getMdxRoutesFromDirectory(
-    path.join(process.cwd(), appConfig.mdxSourceDir.blog),
+    path.join(process.cwd(), resolveMdxSourceDir('blog')),
     "/blog",
     "monthly",
     0.8,
   );
 
   const legalRoutes = getMdxRoutesFromDirectory(
-    path.join(process.cwd(), appConfig.mdxSourceDir.legal),
+    path.join(process.cwd(), resolveMdxSourceDir('legal')),
     "/legal",
     "yearly",
     0.6,
