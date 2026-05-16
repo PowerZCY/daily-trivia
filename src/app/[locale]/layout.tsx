@@ -3,7 +3,6 @@ import { getFumaTranslations } from '@windrun-huaiin/third-ui/fuma/fuma-translat
 import { createLocalizedSiteMetadata } from '@windrun-huaiin/third-ui/lib/seo-metadata';
 import { NProgressBar } from '@windrun-huaiin/third-ui/main';
 import { DocsRootProvider } from '@windrun-huaiin/third-ui/fuma/base/docs-root-provider';
-import { ClerkProviderClient } from '@windrun-huaiin/third-ui/clerk';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { montserrat } from '@/lib/fonts';
@@ -45,20 +44,18 @@ export default async function RootLayout({
       <NextIntlClientProvider messages={messages}>
         <body className={cn(montserrat.className)}>
           <NProgressBar />
-          <ClerkProviderClient locale={locale} localePrefixAsNeeded={localePrefixAsNeeded} defaultLocale={defaultLocale}>
-            <DocsRootProvider
+          <DocsRootProvider
             theme={{
               mode: themeMode,
             }}
-              i18n={{
-                locale: locale,
-                locales: generatedLocales,
-                translations: fumaTranslations,
-              }}
-            >
-              {children}
-            </DocsRootProvider>
-          </ClerkProviderClient>
+            i18n={{
+              locale: locale,
+              locales: generatedLocales,
+              translations: fumaTranslations,
+            }}
+          >
+            {children}
+          </DocsRootProvider>
         </body>
       </NextIntlClientProvider>
     </html>
