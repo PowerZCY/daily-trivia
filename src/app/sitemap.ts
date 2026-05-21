@@ -3,10 +3,11 @@ import path from "node:path";
 import type { MetadataRoute } from "next";
 import { getAsNeededLocalizedUrl } from "@windrun-huaiin/lib/utils";
 import { appConfig, defaultLocale, localePrefixAsNeeded } from "@/lib/appConfig";
-import { getPublishedQuizDates, getTodayUtcDate, isValidTriviaDate } from "@/lib/trivia";
+import { getTodayUtcDate, isValidTriviaDate } from "@/lib/trivia";
 import { resolveMdxSourceDir } from "@/lib/mdx-source";
 
 export const revalidate = 86_400;
+const ARCHIVE_START_DATE = "2026-04-01";
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
 
@@ -44,6 +45,24 @@ function extractFrontmatterDate(content: string) {
   return normalizeFrontmatterDate(dateMatch?.[1]);
 }
 
+function getExcludedSlugsFromMeta(metaPath: string) {
+  if (!fs.existsSync(metaPath) || !fs.statSync(metaPath).isFile()) {
+    return new Set<string>();
+  }
+
+  try {
+    const meta = JSON.parse(fs.readFileSync(metaPath, "utf8")) as { pages?: unknown };
+    const pages = Array.isArray(meta.pages) ? meta.pages : [];
+    return new Set(
+      pages
+        .filter((page): page is string => typeof page === "string" && page.startsWith("!"))
+        .map((page) => page.slice(1)),
+    );
+  } catch {
+    return new Set<string>();
+  }
+}
+
 function getMdxRoutesFromDirectory(
   dir: string,
   baseRoute: string,
@@ -54,9 +73,15 @@ function getMdxRoutesFromDirectory(
     return [] as MdxRoute[];
   }
 
+  const excludedSlugs = getExcludedSlugsFromMeta(path.join(dir, "meta.json"));
+
   return fs
     .readdirSync(dir, { withFileTypes: true })
     .filter((entry) => entry.isFile() && entry.name.endsWith(".mdx"))
+    .filter((entry) => {
+      const slug = entry.name.replace(/\.mdx$/, "");
+      return !excludedSlugs.has(slug);
+    })
     .map((entry) => {
       const slug = entry.name.replace(/\.mdx$/, "");
       const filePath = path.join(dir, entry.name);
@@ -89,9 +114,32 @@ function buildLocalizedEntries(
   }));
 }
 
+function getUtcYesterdayDate() {
+  const today = new Date(`${getTodayUtcDate()}T00:00:00.000Z`);
+  today.setUTCDate(today.getUTCDate() - 1);
+  return today.toISOString().slice(0, 10);
+}
+
+function getArchiveDatesFromRange(startDate: string, endDate: string) {
+  if (!isValidTriviaDate(startDate) || !isValidTriviaDate(endDate) || startDate > endDate) {
+    return [] as string[];
+  }
+
+  const dates: string[] = [];
+  const current = new Date(`${startDate}T00:00:00.000Z`);
+  const end = new Date(`${endDate}T00:00:00.000Z`);
+
+  while (current <= end) {
+    dates.push(current.toISOString().slice(0, 10));
+    current.setUTCDate(current.getUTCDate() + 1);
+  }
+
+  return dates;
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
-    { route: "/", changeFrequency: "daily" as const, priority: 1 }
+    { route: "/", changeFrequency: "daily" as const, priority: 1, lastModified: getTodayUtcDate() },
   ];
 
   const blogRoutes = getMdxRoutesFromDirectory(
@@ -108,12 +156,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     0.6,
   );
 
-  const archiveDates = await getPublishedQuizDates();
-  const todayDate = getTodayUtcDate();
+  const archiveDates = getArchiveDatesFromRange(ARCHIVE_START_DATE, getUtcYesterdayDate());
 
   return [
     ...staticRoutes.flatMap((route) =>
       buildLocalizedEntries(route.route, {
+        lastModified: route.lastModified,
         changeFrequency: route.changeFrequency,
         priority: route.priority,
       }),
@@ -135,7 +183,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...archiveDates.flatMap((date) =>
       buildLocalizedEntries(`/archive/${date}`, {
         lastModified: date,
-        changeFrequency: date === todayDate ? "daily" : "never",
+        changeFrequency: "never",
         priority: 0.7,
       }),
     ),
