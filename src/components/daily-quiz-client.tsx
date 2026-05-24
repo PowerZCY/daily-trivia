@@ -481,12 +481,12 @@ export function DailyQuizClient({ quiz, copy }: Props) {
               <div className="grid gap-2 sm:gap-3">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <div className="text-[22px] font-semibold leading-none tracking-tight text-slate-950 sm:text-[30px]">
+                    <div className="text-[22px] font-semibold leading-none tracking-tight text-slate-800 sm:text-[30px]">
                       Day {quiz.dayNumber}
                     </div>
-                    <h2 className="mt-1 text-[15px] font-medium tracking-tight text-slate-950/75 sm:mt-1.5 sm:text-[16px]">
+                    <div className="mt-1 text-[15px] font-medium tracking-tight text-slate-700/75 sm:mt-1.5 sm:text-[16px]">
                       {quiz.date}
-                    </h2>
+                    </div>
                   </div>
 
                   <div className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 sm:gap-2 sm:px-3 sm:py-1.5 sm:text-[16px]">
@@ -518,9 +518,9 @@ export function DailyQuizClient({ quiz, copy }: Props) {
               </div>
 
               <div className="rounded-3xl border border-white/65 bg-white/42 p-3.5 shadow-sm backdrop-blur-md sm:p-5">
-                <h3 className="text-base font-semibold leading-6 text-slate-950 sm:text-2xl sm:leading-8">
+                <h2 className="text-base font-semibold leading-6 text-slate-800 sm:text-2xl sm:leading-8">
                   {currentQuestion.question}
-                </h3>
+                </h2>
 
                 <div className="mt-3 grid gap-2.5 sm:mt-5 sm:gap-3 md:grid-cols-2">
                   <div
@@ -575,7 +575,7 @@ export function DailyQuizClient({ quiz, copy }: Props) {
                     }`}
                   >
                     <div className="mb-3 flex flex-col items-start gap-3 sm:mb-4 sm:flex-row sm:justify-between sm:gap-4">
-                      <div className="text-base font-semibold text-slate-950">
+                      <div className="text-base font-semibold text-slate-800">
                         {selectedAnswer === currentQuestion.correctAnswer
                           ? copy.correctState
                           : `${copy.incorrectState} ${currentQuestion.correctAnswer}`}
@@ -604,22 +604,23 @@ export function DailyQuizClient({ quiz, copy }: Props) {
           ) : (
             <div className="grid gap-5">
               <div className="relative overflow-hidden rounded-3xl border border-white/55 bg-[linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.14))] p-4 text-center shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-md">
-                <h3 className="text-xl font-semibold tracking-tight text-slate-950 sm:text-2xl">
+                <h2 className="text-xl font-semibold tracking-tight text-slate-700 sm:text-2xl">
                   {scoreTitle.title}
-                </h3>
+                </h2>
                 <p className="mx-auto mt-2 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
-                  <span className="font-semibold text-slate-900">You got {reportScore}.</span>
+                  <span className="font-semibold text-slate-800">You got {reportScore}.</span>
                   <span>{` ${reportBodyRest}`}</span>
                 </p>
                 <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-                  <button
-                    type="button"
+                  <GradientButton
+                    title={copied ? copy.copied : copy.share}
+                    icon={<Share2 />}
+                    variant="soft"
                     onClick={handleShare}
-                    className="inline-flex whitespace-nowrap items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
-                  >
-                    <Share2 className="h-4 w-4" />
-                    <span>{copied ? copy.copied : copy.share}</span>
-                  </button>
+                    preventDoubleClick={false}
+                    className="!h-[38px] !border-[#F97316] !px-5 !text-sm hover:!border-[#ea6f12]"
+                    iconClassName="!text-[#F97316]"
+                  />
                   <button
                     type="button"
                     onClick={handleRetry}
@@ -633,7 +634,7 @@ export function DailyQuizClient({ quiz, copy }: Props) {
 
               <div className="rounded-3xl border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0.16))] p-4 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl sm:p-5">
                 <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <h4 className="text-lg font-semibold text-slate-950">{copy.reviewTitle}</h4>
+                  <h3 className="text-lg font-semibold text-slate-800">{copy.reviewTitle}</h3>
                   <button
                     type="button"
                     onClick={() => setReviewFilter((value) => (value === "all" ? "wrong" : "all"))}
@@ -663,7 +664,7 @@ export function DailyQuizClient({ quiz, copy }: Props) {
                           >
                             {isCorrect ? <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                           </span>
-                          <span className="flex-1 text-[15px] font-medium leading-6 text-slate-900 sm:text-[18px] sm:leading-7">
+                          <span className="flex-1 text-[15px] font-medium leading-6 text-slate-800 sm:text-[18px] sm:leading-7">
                             Q{index + 1}. {question.question}
                           </span>
                         </summary>
@@ -674,12 +675,12 @@ export function DailyQuizClient({ quiz, copy }: Props) {
                             </div>
                           ) : null}
                           <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-[15px] leading-6 text-slate-800 sm:px-4 sm:py-3 sm:text-[16px] sm:leading-7">
-                            <span className="font-semibold text-slate-900">{copy.correctLabel}: </span>
+                            <span className="font-semibold text-slate-800">{copy.correctLabel}: </span>
                             <span>{question.correctAnswer}</span>
                           </div>
                           {question.explanation ? (
                             <div className="rounded-xl border border-white/70 bg-white/55 px-3 py-2.5 text-[15px] leading-6 text-slate-700 backdrop-blur-sm sm:px-4 sm:py-3 sm:text-[16px] sm:leading-7">
-                              <span className="font-semibold text-slate-900">{copy.explanationLabel}: </span>
+                              <span className="font-semibold text-slate-800">{copy.explanationLabel}: </span>
                               <span>{question.explanation}</span>
                             </div>
                           ) : null}

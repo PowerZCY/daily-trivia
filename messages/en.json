@@ -47,6 +47,8 @@
   },
   "archive": {
     "detail": {
+      "title": "Daily Trivia Archive · Day {day} · {date}",
+      "description": "Play five archived daily trivia questions, with answers and explanations.",
       "backToArchive": "Back to  archive",
       "previousDay": "Previous day",
       "previousDayShort": "Previous: Day {day}",

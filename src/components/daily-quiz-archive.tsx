@@ -79,7 +79,7 @@ export function DailyQuizArchive({ archiveDays, basePath, copy }: Props) {
       <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.18),transparent_45%),radial-gradient(circle_at_bottom,rgba(56,189,248,0.18),transparent_35%)] lg:block" />
       <div className="relative mb-4 space-y-3 rounded-[1.4rem] border border-white/70 bg-white/45 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] backdrop-blur-xl">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">{copy.archiveTitle}</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-800 sm:text-3xl">{copy.archiveTitle}</h2>
           <button
             type="button"
             onClick={() => setShowIncompleteOnly((value) => !value)}
@@ -136,7 +136,7 @@ export function DailyQuizArchive({ archiveDays, basePath, copy }: Props) {
                       </div>
                     ) : null}
                   </div>
-                  <p className="text-base leading-7 font-medium tracking-tight text-slate-900 transition-colors group-hover:text-slate-950 sm:text-lg sm:leading-8">
+                  <p className="text-base leading-7 font-medium tracking-tight text-slate-800 transition-colors group-hover:text-slate-900 sm:text-lg sm:leading-8">
                     {item.firstQuestion}
                   </p>
                 </div>

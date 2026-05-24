@@ -27,7 +27,7 @@ export default function ArchiveQuizError({ reset }: ErrorPageProps) {
         <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
           Loading issue
         </p>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
+        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-800 sm:text-3xl">
           We could not load this trivia set.
         </h1>
         <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">

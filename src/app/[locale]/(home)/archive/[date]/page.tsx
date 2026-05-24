@@ -100,6 +100,15 @@ export default async function ArchiveQuizPage({ params }: PageProps) {
         </NavigationFeedbackLink>
       </div>
 
+      <header className="mx-auto max-w-4xl space-y-2 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-700 sm:text-3xl">
+          {t("detail.title", { day: quiz.dayNumber, date: quiz.date })}
+        </h1>
+        <p className="mx-auto max-w-none text-sm leading-6 text-slate-600 sm:whitespace-nowrap sm:text-base sm:leading-7">
+          {t("detail.description")}
+        </p>
+      </header>
+
       <DailyQuizClient
         quiz={quiz}
         copy={{
