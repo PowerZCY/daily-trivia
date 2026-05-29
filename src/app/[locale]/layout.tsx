@@ -9,6 +9,7 @@ import { montserrat } from '@/lib/fonts';
 import { cn } from '@windrun-huaiin/lib/utils';
 import './globals.css';
 import React from 'react';
+import { GoogleAnalyticsScript, MicrosoftClarityScript } from "@windrun-huaiin/base-ui/components/server";
 
 export const dynamic = 'force-dynamic'
 
@@ -57,6 +58,8 @@ export default async function RootLayout({
             {children}
           </DocsRootProvider>
         </body>
+        <GoogleAnalyticsScript />
+        <MicrosoftClarityScript />
       </NextIntlClientProvider>
     </html>
   )
