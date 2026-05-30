@@ -11,7 +11,11 @@ import './globals.css';
 import React from 'react';
 import { GoogleAnalyticsScript, MicrosoftClarityScript } from "@windrun-huaiin/base-ui/components/server";
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400;
+
+export function generateStaticParams() {
+  return appConfig.i18n.locales.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({
   params: paramsPromise

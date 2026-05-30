@@ -11,6 +11,7 @@ import {
   getArchiveDays,
   getCachedArchiveMetadataByDate,
   getCachedDailyQuizByDate,
+  getPublishedQuizDates,
   hasDailyQuizScheduleByDate,
   isFutureTriviaDate,
   isValidTriviaDate,
@@ -22,6 +23,17 @@ type PageProps = {
     date: string;
   }>;
 };
+
+export async function generateStaticParams() {
+  const dates = await getPublishedQuizDates();
+
+  return appConfig.i18n.locales.flatMap((locale) =>
+    dates.map((date) => ({
+      locale,
+      date,
+    })),
+  );
+}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, date } = await params;
