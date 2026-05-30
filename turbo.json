@@ -26,7 +26,9 @@
         "CREDITS_*",
         "STRIPE_*",
         "UPSTASH_REDIS_*",
-        "QSTASH_*"
+        "QSTASH_*",
+        "WINDRUN_HUAIIN_FAQ_*",
+        "WINDRUN_HUAIIN_SDK_*"
       ]
     },
     "task:build:dev": {
@@ -48,7 +50,9 @@
         "CREDITS_*",
         "STRIPE_*",
         "UPSTASH_REDIS_*",
-        "QSTASH_*"
+        "QSTASH_*",
+        "WINDRUN_HUAIIN_FAQ_*",
+        "WINDRUN_HUAIIN_SDK_*"
       ]
     },
     "task:build:prod": {
@@ -71,7 +75,9 @@
         "CREDITS_*",
         "STRIPE_*",
         "UPSTASH_REDIS_*",
-        "QSTASH_*"
+        "QSTASH_*",
+        "WINDRUN_HUAIIN_FAQ_*",
+        "WINDRUN_HUAIIN_SDK_*"
       ]
     },
     "task:md:build": {
@@ -109,7 +115,9 @@
         "CREDITS_*",
         "STRIPE_*",
         "UPSTASH_REDIS_*",
-        "QSTASH_*"
+        "QSTASH_*",
+        "WINDRUN_HUAIIN_FAQ_*",
+        "WINDRUN_HUAIIN_SDK_*"
       ]
     },
     "lint": {
